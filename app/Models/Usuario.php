@@ -22,8 +22,8 @@ class Usuario extends DBAbstractModel {
     private $created_at;
     private $update_at;
     private $user_profile;
-    // private $token; // Si se necesita un token para autenticación
-    // private $token_created_at; // Si se necesita un timestamp para el token
+    private $token;
+    private $token_created_at;
 
     // Setters
     public function setUser($user) {
@@ -38,6 +38,9 @@ class Usuario extends DBAbstractModel {
     public function setUserProfile($user_profile) {
         $this->user_profile = $user_profile;
     }
+    public function setToken($token) {
+        $this->token = $token;
+    }
     // Getters
     public function getId() {
         return $this->id;
@@ -51,6 +54,9 @@ class Usuario extends DBAbstractModel {
     public function getPassword() {
         return $this->password;
     }
+    public function getMessage() {
+        return $this->message;
+    }
     // Métodos
     // Método set
     public function set() {
@@ -63,13 +69,15 @@ class Usuario extends DBAbstractModel {
             return false;
         }
         // Si no existe, insertar el nuevo usuario
-        $this->query = "INSERT INTO usuarios (user, email, password, user_profile) VALUES (:user, :email, :password, :user_profile)";
+        $this->query = "INSERT INTO usuarios (user, email, password, user_profile, token, token_created_at) VALUES (:user, :email, :password, :user_profile, :token, :token_created_at)";
         $this->parametros['user'] = $this->user;
         $this->parametros['email'] = $this->email;
         $this->parametros['password'] = $this->password;
         $this->parametros['created_at'] = date('Y-m-d H:i:s');
         $this->parametros['update_at'] = date('Y-m-d H:i:s');
         $this->parametros['user_profile'] = $this->user_profile;
+        $this->parametros['token'] = $this->token;
+        $this->parametros['token_created_at'] = date('Y-m-d H:i:s');
         $this->get_results_from_query();
         $this->message = 'Usuario registrado correctamente.';
     }
@@ -83,14 +91,22 @@ class Usuario extends DBAbstractModel {
             $usuario = $this->rows[0];
             // Comprobamos que la contraseña coincide con la almacenada en la base de datos
             if ($password === $usuario['password']) {
-                $this->id = $usuario['id'];
-                $this->user = $usuario['user'];
-                $this->email = $usuario['email'];
-                $this->password = $usuario['password'];
-                $this->created_at = $usuario['created_at'];
-                $this->update_at = $usuario['update_at'];
-                $this->user_profile = $usuario['user_profile'];
-                return true;
+                // Comprobamos si el usuario ha verificado su cuenta
+                if ($usuario['token'] === null) {
+                    // Si la cuenta está verificada, asignamos los valores a los atributos de la clase
+                    $this->id = $usuario['id'];
+                    $this->user = $usuario['user'];
+                    $this->email = $usuario['email'];
+                    $this->password = $usuario['password'];
+                    $this->created_at = $usuario['created_at'];
+                    $this->update_at = $usuario['update_at'];
+                    $this->user_profile = $usuario['user_profile'];
+                    $this->token = $usuario['token'];
+                    $this->token_created_at = $usuario['token_created_at'];
+                    return true;
+                } else {
+                    $this->message = 'Debes verificar tu cuenta antes de iniciar sesión. Revisa tu correo electrónico.';
+                }
             }
         }
         return false;
@@ -118,6 +134,29 @@ class Usuario extends DBAbstractModel {
             return $this->rows[0]['user'];
         } else {
             return null;
+        }
+    }
+
+    // Función para obtener el token de un usuario
+    public function getToken($token = '') {
+        $this->query = "SELECT * FROM usuarios WHERE token = :token";
+        $this->parametros['token'] = $token;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            // Comprobar si el token ha expirado
+            $this->token_created_at = $this->rows[0]['token_created_at'];
+            $actual_date = date('Y-m-d H:i:s');
+            $diff = strtotime($actual_date) - strtotime($this->token_created_at);
+            if ($diff < 36000) {
+                $this->query = "UPDATE usuarios SET token = NULL, token_created_at = NULL WHERE token = :token";
+                $this->parametros['token'] = $token;
+                $this->get_results_from_query();
+                $this->message = 'Usuario autenticado correctamente.';
+            } else {
+                $this->message = 'El token ha expirado.';
+            }
+        } else {
+            $this->message = 'Token no válido.';
         }
     }
 

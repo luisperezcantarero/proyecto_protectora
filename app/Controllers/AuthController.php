@@ -2,6 +2,7 @@
 namespace App\Controllers;
 use App\Models\Usuario;
 use App\Models\Propietario;
+use App\Core\EmailSender;
 
 class AuthController extends BaseController {
     public function IndexAction() {
@@ -63,13 +64,24 @@ class AuthController extends BaseController {
 
         // Procesar el formulario si no hay errores
         if ($procesarFormulario) {
+
+            // Generar un token de sesión
+            $randomBytes = random_bytes(32);
+            $token = base64_encode($randomBytes);
+            $secureToken = uniqid("", true) . $token;
+
             // Asignar valores al modelo
             $newUser->setUser($data['user']);
             $newUser->setEmail($data['email']);
             $newUser->setPassword($data['password']);
             $newUser->setUserProfile('user'); // Asignar perfil de usuario por defecto
+            $newUser->setToken($secureToken);
             $newUser->set();
-            header('Location: /usuarios/login');
+            
+            $emailSender = new EmailSender();
+            $emailSender->sendConfirmationEmail($data['user'], '', $data['email'], $secureToken);
+            
+            header('Location: ..');
         }
 
         $this->renderHTML('../app/views/register_view.php', $data);
@@ -124,7 +136,7 @@ class AuthController extends BaseController {
                     header('Location: /');
                     exit;
                 } else {
-                    $data['error'] = 'Email o contraseña incorrectos.';
+                    $data['error'] = $newUser->getMessage() ?: 'Email o contraseña incorrectos.';
                 }
             }
         }
@@ -138,6 +150,25 @@ class AuthController extends BaseController {
         session_destroy();
         header('Location: /');
         exit;
+    }
+
+    public function verifyAction() {
+        // Obtener el token de la URL
+        $token = explode('/', $_SERVER['REQUEST_URI']);
+        // Eliminar los dos primeros elementos del array $token y unirlos en una cadena separada por '/' para almacenarlo en $token
+        $token = array_slice($token, 2);
+        $token = implode('/', $token);
+
+        // Crear una instancia del modelo Usuario y verificar el token
+        $modeloUser = Usuario::getInstance();
+        $modeloUser->getToken($token);
+
+        if ($modeloUser->getMessage() === 'Usuario autenticado correctamente.') {
+            header('Location: /usuarios/login');
+        } else {
+            echo "<p>Error: " . $modeloUser->getMessage() . "</p>";
+            header('Location: /usuarios/login');
+        }
     }
 }
 ?>

@@ -72,6 +72,11 @@ $router->add([  'name' => 'propietarios_add',
                 'profile' => ['user', 'admin']
 ]);
 
+$router->add([  'name' => 'Verificar la cuenta',
+                'path' => '/^\/verificacion(\/|\?token=)[\w\|.\+\-\/=]+$/',
+                'action' => [AuthController::class, 'verifyAction']
+]);
+
 $request = explode('?', $_SERVER['REQUEST_URI'])[0];
 $route = $router->match($request);
 

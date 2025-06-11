@@ -11,6 +11,6 @@
     define('DBPASS', $_ENV['DBPASS']);
     define('DBPORT', $_ENV['DBPORT']);
     define('SMTP_SERVER', $_ENV['SMTP_SERVER']);
-    define('SMTP_USER', $_ENV['SMTP_USER']);
-    define('SMTP_PASS', $_ENV['SMTP_PASS']);
+    // define('SMTP_USER', $_ENV['SMTP_USER']);
+    // define('SMTP_PASS', $_ENV['SMTP_PASS']);
 ?>
