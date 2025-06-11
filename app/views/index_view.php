@@ -6,7 +6,7 @@ require_once "loged.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>Principal</title>
 </head>
 <body>
     <?php
@@ -20,7 +20,21 @@ require_once "loged.php";
     if ($isLogged) {
         echo "<p><a href='/usuarios/logout'>Cerrar sesión</a></p>";
     }
+    include_once 'search_view.php';
     ?>
-    <h1>Hola mundo</h1>
+    <p>Añadir mascota <a href="/mascotas/add">Agregar</a></p>
+    <h2><?php echo $data['mensaje']; ?></h2>
+    <?php
+    foreach ($data['mascotas'] as $id => $mascota) {
+        echo "<div>";
+        echo "<h3>" . htmlspecialchars($mascota['nombre']) . "</h3>";
+        echo "<p>Tipo animal: " . htmlspecialchars($mascota['tipoAnimal']) . "</p>";
+        echo "<p>Raza: " . htmlspecialchars($mascota['raza']) . "</p>";
+        echo "<p>Edad: " . htmlspecialchars($mascota['edad']) . "</p>";
+        echo '<a href="/mascotas/edit/?id=' . $mascota['id'] . '">Editar</a>';
+        echo ' <a href="/mascotas/delete/?id=' . $mascota['id'] . '">Borrar</a>';
+        echo "</div>";
+    }
+    ?>
 </body>
 </html>

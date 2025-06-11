@@ -7,13 +7,9 @@ require_once "../vendor/autoload.php";
 use App\Core\Router;
 use App\Controllers\DefaultController;
 use App\Controllers\AuthController;
+use App\Controllers\MascotasController;
 
 $router = new Router();
-
-$router->add([  'name' => 'index',
-                'path' => '/^\/$/',
-                'action' => [DefaultController::class, 'IndexAction'
-]]);
 
 $router->add([  'name' => 'register',
                 'path' => '/^\/usuarios\/register$/',
@@ -33,7 +29,37 @@ $router->add([  'name' => 'logout',
                 'profile' => ['user', 'admin']
 ]]);
 
-$request = $_SERVER['REQUEST_URI'];
+$router->add([  'name' => 'mascotas',
+                'path' => '/^\/$/',
+                'action' => [MascotasController::class, 'indexAction',
+                'profile' => ['guest']
+]]);
+
+$router->add([  'name' => 'mascotas_add',
+                'path' => '/^\/mascotas\/add$/',
+                'action' => [MascotasController::class, 'addMascotaAction'],
+                'profile' => ['admin']
+]);
+
+$router->add([  'name' => 'mascotas_edit',
+                'path' => '/^\/mascotas\/edit\/?$/',
+                'action' => [MascotasController::class, 'editMascotaAction'],
+                'profile' => ['admin']
+]);
+
+$router->add([  'name' => 'mascotas_delete',
+                'path' => '/^\/mascotas\/delete\/?$/',
+                'action' => [MascotasController::class, 'deleteMascotaAction'],
+                'profile' => ['admin']
+]);
+
+$router->add([  'name' => 'mascotas_search',
+                'path' => '/^\/mascotas\/filter\/?$/',
+                'action' => [MascotasController::class, 'filterMascotaAction'],
+                'profile' => ['guest', 'user', 'admin']
+]);
+
+$request = explode('?', $_SERVER['REQUEST_URI'])[0];
 $route = $router->match($request);
 
 if($route){
