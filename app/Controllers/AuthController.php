@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\Usuario;
+use App\Models\Propietario;
 
 class AuthController extends BaseController {
     public function IndexAction() {
@@ -94,6 +95,7 @@ class AuthController extends BaseController {
             $data['password'] = $_POST['password'];
 
             $newUser = Usuario::getInstance();
+            $newOwner = Propietario::getInstance();
 
             // Validar datos del formulario
             if (empty($data['email'])) {
@@ -116,6 +118,9 @@ class AuthController extends BaseController {
                     $_SESSION['email'] = $data['email'];
                     $_SESSION['user'] = $newUser->getUserByEmail($data['email']);
                     $_SESSION['user_profile'] = $newUser->getUserProfile($data['email']);
+                    $usuario_id = $newUser->getId();
+                    $_SESSION['usuario_id'] = $usuario_id;
+                    $_SESSION['isPropietario'] = $newOwner->isPropietario($_SESSION['usuario_id']);
                     header('Location: /');
                     exit;
                 } else {

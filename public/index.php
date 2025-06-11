@@ -8,6 +8,7 @@ use App\Core\Router;
 use App\Controllers\DefaultController;
 use App\Controllers\AuthController;
 use App\Controllers\MascotasController;
+use App\Controllers\PropietarioController;
 
 $router = new Router();
 
@@ -57,6 +58,18 @@ $router->add([  'name' => 'mascotas_search',
                 'path' => '/^\/mascotas\/filter\/?$/',
                 'action' => [MascotasController::class, 'filterMascotaAction'],
                 'profile' => ['guest', 'user', 'admin']
+]);
+
+$router->add([  'name' => 'propietarios',
+                'path' => '/^\/propietarios$/',
+                'action' => [PropietarioController::class, 'indexAction'],
+                'profile' => ['guest', 'user', 'admin']
+]);
+
+$router->add([  'name' => 'propietarios_add',
+                'path' => '/^\/propietarios\/add$/',
+                'action' => [PropietarioController::class, 'addPropietarioAction'],
+                'profile' => ['user', 'admin']
 ]);
 
 $request = explode('?', $_SERVER['REQUEST_URI'])[0];

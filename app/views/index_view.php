@@ -20,6 +20,7 @@ require_once "loged.php";
     if ($isLogged) {
         echo "<p><a href='/usuarios/logout'>Cerrar sesión</a></p>";
     }
+    echo "Perfil actual: " . ($_SESSION['user_profile'] ?? 'no definido');
     include_once 'search_view.php';
     ?>
     <p>Añadir mascota <a href="/mascotas/add">Agregar</a></p>
@@ -36,5 +37,6 @@ require_once "loged.php";
         echo "</div>";
     }
     ?>
+    <a href="/propietarios">Ir a propietarios</a>
 </body>
 </html>

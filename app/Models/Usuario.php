@@ -39,6 +39,9 @@ class Usuario extends DBAbstractModel {
         $this->user_profile = $user_profile;
     }
     // Getters
+    public function getId() {
+        return $this->id;
+    }
     public function getUser() {
         return $this->user;
     }
