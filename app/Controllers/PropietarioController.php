@@ -13,7 +13,6 @@ class PropietarioController extends BaseController {
     public function addPropietarioAction($request) {
         if (!isset($_SESSION['usuario_id'])) {
             header('Location: /');
-            exit;
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $usuario_id = $_SESSION['usuario_id'];
@@ -27,10 +26,8 @@ class PropietarioController extends BaseController {
                 $_SESSION['mensaje'] = $modeloPropietario->getMessage();
             }
             header('Location: /propietarios');
-            exit;
         } else {
             header('Location: /propietarios');
-            exit;
         }
     }
 }

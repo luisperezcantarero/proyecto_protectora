@@ -15,7 +15,6 @@ class AuthController extends BaseController {
         // Si el usuario ya está logueado, redirigir a la página principal
         if (isset($_SESSION['user'])) {
             header('Location: /');
-            exit;
         }
         $data['location'] = 'register';
         $data['message'] = 'Registro de usuario';
@@ -99,7 +98,6 @@ class AuthController extends BaseController {
         // Si ya está logueado, redirigir a la página principal
         if (isset($_SESSION['user'])) {
             header('Location: /');
-            exit;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -134,7 +132,6 @@ class AuthController extends BaseController {
                     $_SESSION['usuario_id'] = $usuario_id;
                     $_SESSION['isPropietario'] = $newOwner->isPropietario($_SESSION['usuario_id']);
                     header('Location: /');
-                    exit;
                 } else {
                     $data['error'] = $newUser->getMessage() ?: 'Email o contraseña incorrectos.';
                 }
@@ -149,7 +146,6 @@ class AuthController extends BaseController {
         // Destruir la sesión y redirigir a la página principal
         session_destroy();
         header('Location: /');
-        exit;
     }
 
     public function verifyAction() {

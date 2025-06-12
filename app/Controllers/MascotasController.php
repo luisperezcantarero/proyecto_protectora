@@ -24,7 +24,6 @@ class MascotasController extends BaseController {
             $modeloMascota->set();
 
             header('Location: /');
-            exit;
         } else {
             $this->renderHTML('../app/views/add_view.php');
         }
@@ -46,14 +45,12 @@ class MascotasController extends BaseController {
                 $modeloMascota->setPropietarioId($propietario_id);
                 $modeloMascota->edit();
                 header('Location: /');
-                exit;
             }
             $data['mascota'] = $mascota;
             $this->renderHTML('../app/views/edit_view.php', $data);
         } else {
             // Si no se encuentra la mascota, redirigimos al listado
             header('Location: /');
-            exit;
         }
     }
 
@@ -63,11 +60,9 @@ class MascotasController extends BaseController {
             // Pasamos el ID de la mascota a eliminar
             $modeloMascota->delete($_GET['id']);
             header('Location: /');
-            exit;
         } else {
             // Si no se pasa un ID, redirigimos al listado
             header('Location: /');
-            exit;
         }
     }
 
@@ -80,7 +75,6 @@ class MascotasController extends BaseController {
         } else {
             // Si no se pasa un filtro, redirigimos al listado completo
             header('Location: /');
-            exit;
         }
     }
 }
