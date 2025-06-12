@@ -15,12 +15,16 @@ class MascotasController extends BaseController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $modeloMascota = Mascotas::getInstance();
             $modeloMascota->setNombre($_POST['nombre']);
-            $modeloMascota->setTipoAnimal($_POST['tipoAnimal']);
+            $modeloMascota->setEspecie($_POST['especie']);
             $modeloMascota->setRaza($_POST['raza']);
             $modeloMascota->setEdad($_POST['edad']);
-            // Permitimos que el propietario sea nulo
-            $propietario_id = !empty($_POST['propietario_id']) ? $_POST['propietario_id'] : null;
-            $modeloMascota->setPropietarioId($propietario_id);
+            $modeloMascota->setEstado($_POST['estado_id']);
+            $modeloMascota->setHistorial($_POST['historial_medico']);
+            $modeloMascota->setFoto($_POST['foto']);
+            $modeloMascota->setFechaIngreso(date('Y-m-d H:i:s'));
+            $modeloMascota->setCreadoPor($_SESSION['id']); // Asignamos el ID del usuario que crea la mascota
+            $modeloMascota->setCreatedAt(date('Y-m-d H:i:s'));
+            $modeloMascota->setUpdatedAt(date('Y-m-d H:i:s'));
             $modeloMascota->set();
 
             header('Location: /');
@@ -37,12 +41,13 @@ class MascotasController extends BaseController {
             $mascota = $modeloMascota->getMascota();
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $modeloMascota->setNombre($_POST['nombre']);
-                $modeloMascota->setTipoAnimal($_POST['tipoAnimal']);
+                $modeloMascota->setEspecie($_POST['especie']);
                 $modeloMascota->setRaza($_POST['raza']);
                 $modeloMascota->setEdad($_POST['edad']);
-                // Permitimos que el propietario sea nulo
-                $propietario_id = !empty($_POST['propietario_id']) ? $_POST['propietario_id'] : null;
-                $modeloMascota->setPropietarioId($propietario_id);
+                $modeloMascota->setEstado($_POST['estado_id']);
+                $modeloMascota->setHistorial($_POST['historial_medico']);
+                $modeloMascota->setFoto($_POST['foto']);
+                $modeloMascota->setUpdatedAt(date('Y-m-d H:i:s'));
                 $modeloMascota->edit();
                 header('Location: /');
             }

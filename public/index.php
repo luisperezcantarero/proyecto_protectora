@@ -1,14 +1,12 @@
 <?php
 session_start();
-$_SESSION['user_profile'] = $_SESSION['user_profile'] ?? 'guest';
+$_SESSION['rol'] = $_SESSION['rol'] ?? 'guest';
 require_once "../bootstrap.php";
 require_once "../vendor/autoload.php";
 
 use App\Core\Router;
-use App\Controllers\DefaultController;
 use App\Controllers\AuthController;
 use App\Controllers\MascotasController;
-use App\Controllers\PropietarioController;
 
 $router = new Router();
 
@@ -27,49 +25,37 @@ $router->add([  'name' => 'login',
 $router->add([  'name' => 'logout',
                 'path' => '/^\/usuarios\/logout$/',
                 'action' => [AuthController::class, 'logoutAction',
-                'profile' => ['user', 'admin']
+                'profile' => ['adoptante', 'administrador', 'trabajador']
 ]]);
 
 $router->add([  'name' => 'mascotas',
                 'path' => '/^\/$/',
                 'action' => [MascotasController::class, 'indexAction',
-                'profile' => ['guest']
+                'profile' => ['guest', 'adoptante', 'administrador', 'trabajador']
 ]]);
 
 $router->add([  'name' => 'mascotas_add',
                 'path' => '/^\/mascotas\/add$/',
                 'action' => [MascotasController::class, 'addMascotaAction'],
-                'profile' => ['admin']
+                'profile' => ['administrador']
 ]);
 
 $router->add([  'name' => 'mascotas_edit',
                 'path' => '/^\/mascotas\/edit\/?$/',
                 'action' => [MascotasController::class, 'editMascotaAction'],
-                'profile' => ['admin']
+                'profile' => ['administrador']
 ]);
 
 $router->add([  'name' => 'mascotas_delete',
                 'path' => '/^\/mascotas\/delete\/?$/',
                 'action' => [MascotasController::class, 'deleteMascotaAction'],
-                'profile' => ['admin']
+                'profile' => ['administrador']
 ]);
 
 $router->add([  'name' => 'mascotas_search',
                 'path' => '/^\/mascotas\/filter\/?$/',
                 'action' => [MascotasController::class, 'filterMascotaAction'],
-                'profile' => ['guest', 'user', 'admin']
-]);
-
-$router->add([  'name' => 'propietarios',
-                'path' => '/^\/propietarios$/',
-                'action' => [PropietarioController::class, 'indexAction'],
-                'profile' => ['guest', 'user', 'admin']
-]);
-
-$router->add([  'name' => 'propietarios_add',
-                'path' => '/^\/propietarios\/add$/',
-                'action' => [PropietarioController::class, 'addPropietarioAction'],
-                'profile' => ['user', 'admin']
+                'profile' => ['guest', 'adoptante', 'administrador', 'trabajador']
 ]);
 
 $router->add([  'name' => 'Verificar la cuenta',
@@ -82,7 +68,7 @@ $route = $router->match($request);
 
 if($route){
     // Comprobar si el usuario está autenticado y si la ruta requiere un perfil específico
-    if (isset($route['profile']) && !in_array($_SESSION['user_profile'], $route['profile'])) {
+    if (isset($route['profile']) && !in_array($_SESSION['rol'], $route['profile'])) {
         header('Location: /');
     } else {
         $controllerName = $route['action'][0];

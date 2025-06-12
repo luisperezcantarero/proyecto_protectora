@@ -1,5 +1,5 @@
 <?php
-require_once "loged.php";
+require_once "../app/Config/conf.php";
 if ($isLogged) {
     header("Location: /");
     exit;

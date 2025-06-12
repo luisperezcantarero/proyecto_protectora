@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\Usuario;
-use App\Models\Propietario;
+use App\Models\Roles;
 use App\Core\EmailSender;
 
 class AuthController extends BaseController {
@@ -13,7 +13,7 @@ class AuthController extends BaseController {
 
     public function registerAction($request) {
         // Si el usuario ya está logueado, redirigir a la página principal
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['nombre'])) {
             header('Location: /');
         }
         $data['location'] = 'register';
@@ -21,21 +21,21 @@ class AuthController extends BaseController {
         $data['error'] = '';
 
         $procesarFormulario = false;
-        $data['user'] = $data['email'] = $data['password'] = $data['password2'] = '';
-        $data['userError'] = $data['emailError'] = $data['passwordError'] = $data['password2Error'] = '';
+        $data['nombre'] = $data['email'] = $data['password'] = $data['password2'] = '';
+        $data['nombreError'] = $data['emailError'] = $data['passwordError'] = $data['password2Error'] = '';
 
         $newUser = new Usuario();
 
         if (!empty($_POST)) {
-            $data['user'] = $_POST['user'];
+            $data['nombre'] = $_POST['nombre'];
             $data['email'] = $_POST['email'];
             $data['password'] = $_POST['password'];
             $data['password2'] = $_POST['password2'];
 
             $procesarFormulario = true;
             // Validar datos del formulario
-            if (empty($data['user'])) {
-                $data['userError'] = 'El nombre de usuario es obligatorio.';
+            if (empty($data['nombre'])) {
+                $data['nombreError'] = 'El nombre de usuario es obligatorio.';
                 $procesarFormulario = false;
             }
 
@@ -70,17 +70,17 @@ class AuthController extends BaseController {
             $secureToken = uniqid("", true) . $token;
 
             // Asignar valores al modelo
-            $newUser->setUser($data['user']);
+            $newUser->setNombre($data['nombre']);
             $newUser->setEmail($data['email']);
             $newUser->setPassword($data['password']);
-            $newUser->setUserProfile('user'); // Asignar perfil de usuario por defecto
+            $newUser->setRol('adoptante'); // Asignar perfil de usuario por defecto
             $newUser->setToken($secureToken);
             $newUser->set();
             
             $emailSender = new EmailSender();
-            $emailSender->sendConfirmationEmail($data['user'], '', $data['email'], $secureToken);
+            $emailSender->sendConfirmationEmail($data['nombre'], '', $data['email'], $secureToken);
             
-            header('Location: ..');
+            header('Location: /usuarios/login');
         }
 
         $this->renderHTML('../app/views/register_view.php', $data);
@@ -96,7 +96,7 @@ class AuthController extends BaseController {
         $procesarFormulario = true;
 
         // Si ya está logueado, redirigir a la página principal
-        if (isset($_SESSION['user'])) {
+        if (isset($_SESSION['nombre'])) {
             header('Location: /');
         }
 
@@ -105,7 +105,7 @@ class AuthController extends BaseController {
             $data['password'] = $_POST['password'];
 
             $newUser = Usuario::getInstance();
-            $newOwner = Propietario::getInstance();
+            $objRol = Roles::getInstance();
 
             // Validar datos del formulario
             if (empty($data['email'])) {
@@ -121,19 +121,24 @@ class AuthController extends BaseController {
                 $procesarFormulario = false;
             }
 
+            if ($newUser->isBloqueado($data['email'])) {
+                $data['error'] = 'El usuario está bloqueado, contacta con un administrador';
+                $procesarFormulario = false;
+            }
+
             // Procesar el formulario si no hay errores
             if ($procesarFormulario) {
                 // Intentar iniciar sesión
                 if ($newUser->login($data['email'], $data['password'])) {
+                    $_SESSION['id'] = $newUser->getId();
                     $_SESSION['email'] = $data['email'];
-                    $_SESSION['user'] = $newUser->getUserByEmail($data['email']);
-                    $_SESSION['user_profile'] = $newUser->getUserProfile($data['email']);
-                    $usuario_id = $newUser->getId();
-                    $_SESSION['usuario_id'] = $usuario_id;
-                    $_SESSION['isPropietario'] = $newOwner->isPropietario($_SESSION['usuario_id']);
+                    $_SESSION['nombre'] = $newUser->getUserByEmail($data['email']);
+                    $rol_id = $newUser->getUserProfile($data['email']);
+                    $_SESSION['rol'] = $objRol->getNombreById($rol_id);
+                    $_SESSION['bloqueado'] = 0;
                     header('Location: /');
                 } else {
-                    $data['error'] = $newUser->getMessage() ?: 'Email o contraseña incorrectos.';
+                    $data['error'] = $newUser->getMessage();
                 }
             }
         }

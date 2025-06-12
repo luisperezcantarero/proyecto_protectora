@@ -16,18 +16,19 @@ class Usuario extends DBAbstractModel {
     }
     // Atributos
     private $id;
-    private $user;
+    private $nombre;
     private $email;
     private $password;
+    private $rol_id;
+    private $bloqueado;
     private $created_at;
     private $update_at;
-    private $user_profile;
     private $token;
     private $token_created_at;
 
     // Setters
-    public function setUser($user) {
-        $this->user = $user;
+    public function setNombre($nombre) {
+        $this->nombre = $nombre;
     }
     public function setEmail($email) {
         $this->email = $email;
@@ -35,8 +36,11 @@ class Usuario extends DBAbstractModel {
     public function setPassword($password) {
         $this->password = $password;
     }
-    public function setUserProfile($user_profile) {
-        $this->user_profile = $user_profile;
+    public function setRol($rol_id) {
+        $this->rol_id = $rol_id;
+    }
+    public function setBloqueo($bloqueado) {
+        $this->bloqueado = $bloqueado;
     }
     public function setToken($token) {
         $this->token = $token;
@@ -45,14 +49,20 @@ class Usuario extends DBAbstractModel {
     public function getId() {
         return $this->id;
     }
-    public function getUser() {
-        return $this->user;
+    public function getNombre() {
+        return $this->nombre;
     }
     public function getEmail() {
         return $this->email;
     }
     public function getPassword() {
         return $this->password;
+    }
+    public function getRol() {
+        return $this->rol_id;
+    }
+    public function getBloqueo() {
+        return $this->bloqueo;
     }
     public function getMessage() {
         return $this->message;
@@ -69,13 +79,14 @@ class Usuario extends DBAbstractModel {
             return false;
         }
         // Si no existe, insertar el nuevo usuario
-        $this->query = "INSERT INTO usuarios (user, email, password, user_profile, token, token_created_at) VALUES (:user, :email, :password, :user_profile, :token, :token_created_at)";
-        $this->parametros['user'] = $this->user;
+        $this->query = "INSERT INTO usuarios (nombre, email, password, rol_id, bloqueado, created_at, updated_at, token, token_created_at) VALUES (:nombre, :email, :password, :rol_id, :bloqueado, :created_at, :updated_at, :token, :token_created_at)";
+        $this->parametros['nombre'] = $this->nombre;
         $this->parametros['email'] = $this->email;
         $this->parametros['password'] = $this->password;
+        $this->parametros['rol_id'] = $this->rol_id;
+        $this->parametros['bloqueado'] = $this->bloqueado;
         $this->parametros['created_at'] = date('Y-m-d H:i:s');
-        $this->parametros['update_at'] = date('Y-m-d H:i:s');
-        $this->parametros['user_profile'] = $this->user_profile;
+        $this->parametros['updated_at'] = date('Y-m-d H:i:s');
         $this->parametros['token'] = $this->token;
         $this->parametros['token_created_at'] = date('Y-m-d H:i:s');
         $this->get_results_from_query();
@@ -95,12 +106,13 @@ class Usuario extends DBAbstractModel {
                 if ($usuario['token'] === null) {
                     // Si la cuenta está verificada, asignamos los valores a los atributos de la clase
                     $this->id = $usuario['id'];
-                    $this->user = $usuario['user'];
+                    $this->nombre = $usuario['nombre'];
                     $this->email = $usuario['email'];
                     $this->password = $usuario['password'];
+                    $this->rol_id = $usuario['rol_id'];
+                    $this->bloqueado = $usuario['bloqueado'];
                     $this->created_at = $usuario['created_at'];
                     $this->update_at = $usuario['update_at'];
-                    $this->user_profile = $usuario['user_profile'];
                     $this->token = $usuario['token'];
                     $this->token_created_at = $usuario['token_created_at'];
                     return true;
@@ -115,23 +127,39 @@ class Usuario extends DBAbstractModel {
 
     // Método para obtener el perfil de usuario
     public function getUserProfile($email) {
-        $this->query = "SELECT user_profile FROM usuarios WHERE email = :email";
+        $this->query = "SELECT rol_id FROM usuarios WHERE email = :email";
         $this->parametros['email'] = $email;
         $this->get_results_from_query();
         if (count($this->rows) > 0) {
-            return $this->rows[0]['user_profile'];
+            return $this->rows[0]['rol_id'];
         } else {
             return null;
         }
     }
 
+    // Método para verificar si un usuario está bloqueado
+    public function isBloqueado($email) {
+        $this->query = "SELECT bloqueado FROM usuarios WHERE email = :email";
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        if (count($this->rows) == 1) {
+            $usuario = $this->rows[0];
+            if ($usuario['bloqueado'] === 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
     // Método para obtener usuario por email
     public function getUserByEmail($email) {
-        $this->query = "SELECT user FROM usuarios WHERE email = :email";
+        $this->query = "SELECT nombre FROM usuarios WHERE email = :email";
         $this->parametros['email'] = $email;
         $this->get_results_from_query();
         if (count($this->rows) > 0) {
-            return $this->rows[0]['user'];
+            return $this->rows[0]['nombre'];
         } else {
             return null;
         }
