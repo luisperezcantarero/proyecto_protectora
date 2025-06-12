@@ -25,6 +25,8 @@ class Usuario extends DBAbstractModel {
     private $update_at;
     private $token;
     private $token_created_at;
+    private $intentos_fallidos;
+    private $message;
 
     // Setters
     public function setNombre($nombre) {
@@ -79,7 +81,7 @@ class Usuario extends DBAbstractModel {
             return false;
         }
         // Si no existe, insertar el nuevo usuario
-        $this->query = "INSERT INTO usuarios (nombre, email, password, rol_id, bloqueado, created_at, updated_at, token, token_created_at) VALUES (:nombre, :email, :password, :rol_id, :bloqueado, :created_at, :updated_at, :token, :token_created_at)";
+        $this->query = "INSERT INTO usuarios (nombre, email, password, rol_id, bloqueado, created_at, updated_at, token, token_created_at, intentos_fallidos) VALUES (:nombre, :email, :password, :rol_id, :bloqueado, :created_at, :updated_at, :token, :token_created_at, :intentos_fallidos)";
         $this->parametros['nombre'] = $this->nombre;
         $this->parametros['email'] = $this->email;
         $this->parametros['password'] = $this->password;
@@ -89,6 +91,7 @@ class Usuario extends DBAbstractModel {
         $this->parametros['updated_at'] = date('Y-m-d H:i:s');
         $this->parametros['token'] = $this->token;
         $this->parametros['token_created_at'] = date('Y-m-d H:i:s');
+        $this->parametros['intentos_fallidos'] = 0;
         $this->get_results_from_query();
         $this->message = 'Usuario registrado correctamente.';
     }
@@ -135,6 +138,33 @@ class Usuario extends DBAbstractModel {
         } else {
             return null;
         }
+    }
+
+    public function getIntentosFallidos($email) {
+        $this->query = "SELECT intentos_fallidos FROM usuarios WHERE email = :email";
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows[0]['intentos_fallidos'];
+        } else {
+            return 0; // Si no se encuentra el usuario, devolvemos 0 intentos fallidos
+        }
+    }
+
+    public function setIntentosFallidos($email, $intentos) {
+        $this->query = "UPDATE usuarios SET intentos_fallidos = :intentos_fallidos WHERE email = :email";
+        $this->parametros['intentos_fallidos'] = $intentos;
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        $this->message = 'Intentos fallidos actualizados correctamente.';
+    }
+
+    public function bloquearUsuario($email) {
+        $this->query = "UPDATE usuarios SET bloqueado = :bloqueado WHERE email = :email";
+        $this->parametros['bloqueado'] = $this->bloqueado;
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        $this->message = 'Usuario bloqueado correctamente.';
     }
 
     // Método para verificar si un usuario está bloqueado

@@ -27,6 +27,7 @@ class Mascotas extends DBAbstractModel {
     private $creado_por;
     private $created_at;
     private $updated_at;
+    protected $mensaje;
 
     // Setters
     public function setId($id) {
@@ -66,6 +67,9 @@ class Mascotas extends DBAbstractModel {
         $this->updated_at = $updated_at;
     }
     // Getters
+    public function getMensaje() {
+        return $this->mensaje;
+    }
     public function getId() {
         return $this->id;
     }

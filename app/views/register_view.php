@@ -21,9 +21,9 @@ if ($isLogged) {
     ?>
     <h2>Crea tu cuenta:</h2>
     <form method="post">
-        <label for="user">Nombre de usuario:</label>
-        <input type="text" id="user" name="user" value="<?php echo htmlspecialchars($data['user']); ?>">
-        <span style="color: red;"><?php echo $data['userError'] ?? ''; ?></span>
+        <label for="nombre">Nombre de usuario:</label>
+        <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($data['nombre']); ?>">
+        <span style="color: red;"><?php echo $data['nombreError'] ?? ''; ?></span>
         <br>
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($data['email']); ?>">
