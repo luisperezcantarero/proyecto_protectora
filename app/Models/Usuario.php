@@ -159,7 +159,8 @@ class Usuario extends DBAbstractModel {
         $this->message = 'Intentos fallidos actualizados correctamente.';
     }
 
-    public function bloquearUsuario($email) {
+    // Método para bloquear un usuario
+    public function ActualizarBloqueoUsuario($email) {
         $this->query = "UPDATE usuarios SET bloqueado = :bloqueado WHERE email = :email";
         $this->parametros['bloqueado'] = $this->bloqueado;
         $this->parametros['email'] = $email;
@@ -181,6 +182,17 @@ class Usuario extends DBAbstractModel {
             }
         }
         return false;
+    }
+
+    // Método para obtener usuarios bloqueados
+    public function getUsuariosBloqueados() {
+        $this->query = "SELECT * FROM usuarios WHERE bloqueado = 1";
+        $this->get_results_from_query();
+        if (is_array($this->rows)) {
+            return $this->rows;
+        } else {
+            return [];
+        }
     }
 
     // Método para obtener usuario por email

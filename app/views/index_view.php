@@ -16,6 +16,7 @@ require_once "../app/Config/conf.php";
         echo "<p>Bienvenido Adoptante " . $_SESSION['nombre'] . " </p>";
     } else if ($profile === "administrador"){
         echo "<p>Bienvenido administrador " . $_SESSION['nombre'] . " </p>";
+        echo '<p><a href="/admin/bloqueados">Ver usuarios bloqueados</a></p>';
         echo '<p>Añadir mascota <a href="/mascotas/add">Agregar</a></p>';
     } else if ($profile === "trabajador") {
         echo "<p>Bienvenido Trabajador " . $_SESSION['nombre'] . " </p>"; 

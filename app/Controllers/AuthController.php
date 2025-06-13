@@ -184,7 +184,7 @@ class AuthController extends BaseController {
             if ($intentos >= 3 && $emailValido) {
                 $newUser->setBloqueo(1);
                 $newUser->setEmail($data['email']);
-                $newUser->bloquearUsuario($data['email']);
+                $newUser->ActualizarBloqueoUsuario($data['email']);
                 $newUser->setIntentosFallidos($data['email'], 0);
                 $data['error'] = 'Has superado el número máximo de intentos. Tu cuenta ha sido bloqueada.';
             }

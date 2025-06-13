@@ -7,6 +7,7 @@ require_once "../vendor/autoload.php";
 use App\Core\Router;
 use App\Controllers\AuthController;
 use App\Controllers\MascotasController;
+use App\Controllers\AdminController;
 
 $router = new Router();
 
@@ -61,6 +62,20 @@ $router->add([  'name' => 'mascotas_search',
 $router->add([  'name' => 'Verificar la cuenta',
                 'path' => '/^\/verificacion(\/|\?token=)[\w\|.\+\-\/=]+$/',
                 'action' => [AuthController::class, 'verifyAction']
+]);
+
+$router->add([
+    'name' => 'usuarios_bloqueados',
+    'path' => '/^\/admin\/bloqueados$/',
+    'action' => [AdminController::class, 'usuariosBloqueadosAction'],
+    'profile' => ['administrador']
+]);
+
+$router->add([
+    'name' => 'desbloquear_usuarios',
+    'path' => '/^\/admin\/desbloquear$/',
+    'action' => [AdminController::class, 'desbloquearUsuariosAction'],
+    'profile' => ['administrador']
 ]);
 
 $request = explode('?', $_SERVER['REQUEST_URI'])[0];
