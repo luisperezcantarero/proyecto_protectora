@@ -18,7 +18,7 @@ class MascotasController extends BaseController {
             $modeloMascota->setEspecie($_POST['especie']);
             $modeloMascota->setRaza($_POST['raza']);
             $modeloMascota->setEdad($_POST['edad']);
-            $modeloMascota->setEstado($_POST['estado_id']);
+            $modeloMascota->setEstado(1); // Estado de en adopción
             $modeloMascota->setHistorial($_POST['historial_medico']);
             $modeloMascota->setFoto($_POST['foto']);
             $modeloMascota->setFechaIngreso(date('Y-m-d H:i:s'));
@@ -37,14 +37,15 @@ class MascotasController extends BaseController {
         // Verificamos si se ha pasado un ID de mascota
         if (isset($_GET['id'])) {
             $modeloMascota = Mascotas::getInstance();
-            $modeloMascota->setId($_GET['id']);
-            $mascota = $modeloMascota->getMascota();
+            $id = $_GET['id'];
+            $mascota = $modeloMascota->getMascota($id);
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $modeloMascota->setId($id);
                 $modeloMascota->setNombre($_POST['nombre']);
                 $modeloMascota->setEspecie($_POST['especie']);
                 $modeloMascota->setRaza($_POST['raza']);
                 $modeloMascota->setEdad($_POST['edad']);
-                $modeloMascota->setEstado($_POST['estado_id']);
+                $modeloMascota->setEstado(1); // Mantenemos el estado en adopción
                 $modeloMascota->setHistorial($_POST['historial_medico']);
                 $modeloMascota->setFoto($_POST['foto']);
                 $modeloMascota->setUpdatedAt(date('Y-m-d H:i:s'));

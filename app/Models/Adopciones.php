@@ -241,5 +241,11 @@ class Adopciones extends DBAbstractModel {
         $this->get_results_from_query();
         return $this->rows;
     }
+
+    public function getEstadosAdopcion() {
+        $this->query = "SELECT * FROM t_estados_adopcion";
+        $this->get_results_from_query();
+        return $this->rows;
+    }
 }
 ?>

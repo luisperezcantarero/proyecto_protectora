@@ -35,12 +35,12 @@ require_once "../app/Config/conf.php";
     include_once 'search_view.php';
     foreach ($data['mascotas'] as $id => $mascota) {
         echo "<div>";
-        echo "<h3>" . htmlspecialchars($mascota['nombre']) . "</h3>";
-        echo "<p>Especie: " . htmlspecialchars($mascota['especie']) . "</p>";
-        echo "<p>Raza: " . htmlspecialchars($mascota['raza']) . "</p>";
-        echo "<p>Edad: " . htmlspecialchars($mascota['edad']) . "</p>";
-        echo "<p>Historial médico: " . htmlspecialchars($mascota['historial_medico']) . "</p>";
-        echo "<img src='" . htmlspecialchars($mascota['foto']) . "' alt='mascota' >";
+        echo "<h3>" . $mascota['nombre'] . "</h3>";
+        echo "<p>Especie: " . $mascota['especie'] . "</p>";
+        echo "<p>Raza: " . $mascota['raza'] . "</p>";
+        echo "<p>Edad: " . $mascota['edad'] . "</p>";
+        echo "<p>Historial médico: " . $mascota['historial_medico'] . "</p>";
+        echo "<img src='" . $mascota['foto'] . "' alt='mascota' >";
         if ($profile === "administrador") {
             echo '<a href="/mascotas/edit/?id=' . $mascota['id'] . '">Editar</a>';
             echo ' <a href="/mascotas/delete/?id=' . $mascota['id'] . '">Borrar</a>';

@@ -13,11 +13,11 @@ require_once "../app/Config/conf.php";
     <?php
     foreach ($data['adopciones'] as $adopcion) {
         echo "<div>";
-        echo "<h3>Adopción ID: " . htmlspecialchars($adopcion['id']) . "</h3>";
-        echo "<p>Fecha de adopción: " . htmlspecialchars($adopcion['fecha_adopcion']) . "</p>";
-        echo "<p>Estado: " . htmlspecialchars($adopcion['estado_id']) . "</p>";
-        echo "<p>Adoptante ID: " . htmlspecialchars($adopcion['adoptante_id']) . "</p>";
-        echo "<p>Trabajador ID: " . htmlspecialchars($adopcion['trabajador_id']) . "</p>";
+        echo "<h3>Adopción de " . $data['mascotas'][$adopcion['mascota_id']] . "</h3>";
+        echo "<p>Fecha de adopción: " . $adopcion['fecha_adopcion'] . "</p>";
+        echo "<p>Estado: " . $data['estados'][$adopcion['estado_id']] . "</p>";
+        echo "<p>Adoptante: " . $data['adoptantes'][$adopcion['adoptante_id']] . "</p>";
+        echo "<p>Trabajador: " . $data['trabajadores'][$adopcion['trabajador_id']] . "</p>";
         if ($profile === "adoptante") {
             echo '<a href="/adopciones/cancelar/?id=' . $adopcion['id'] . '">Cancelar adopción</a>';
         }
@@ -28,11 +28,11 @@ require_once "../app/Config/conf.php";
     <?php
     foreach ($data['adopciones_finalizadas'] as $adopcion) {
         echo "<div>";
-        echo "<h3>Adopción ID: " . htmlspecialchars($adopcion['id']) . "</h3>";
-        echo "<p>Fecha de adopción: " . htmlspecialchars($adopcion['fecha_adopcion']) . "</p>";
-        echo "<p>Estado: " . htmlspecialchars($adopcion['estado_id']) . "</p>";
-        echo "<p>Adoptante ID: " . htmlspecialchars($adopcion['adoptante_id']) . "</p>";
-        echo "<p>Trabajador ID: " . htmlspecialchars($adopcion['trabajador_id']) . "</p>";
+        echo "<h3>Adopción de " . $data['mascotas'][$adopcion['mascota_id']] . "</h3>";
+        echo "<p>Fecha de adopción: " . $adopcion['fecha_adopcion'] . "</p>";
+        echo "<p>Estado: " . $data['estados'][$adopcion['estado_id']] . "</p>";
+        echo "<p>Adoptante: " . $data['adoptantes'][$adopcion['adoptante_id']] . "</p>";
+        echo "<p>Trabajador: " . $data['trabajadores'][$adopcion['trabajador_id']] . "</p>";
         if ($adopcion['tiene_encuesta']) {
             echo "<p>Encuesta ya realizada</p>";
         } else {
@@ -45,12 +45,12 @@ require_once "../app/Config/conf.php";
     <?php
     foreach ($data['adopciones_canceladas'] as $adopcion) {
         echo "<div>";
-        echo "<h3>Adopción ID: " . htmlspecialchars($adopcion['id']) . "</h3>";
-        echo "<p>Fecha de adopción: " . htmlspecialchars($adopcion['fecha_adopcion']) . "</p>";
-        echo "<p>Estado: " . htmlspecialchars($adopcion['estado_id']) . "</p>";
-        echo "<p>Adoptante ID: " . htmlspecialchars($adopcion['adoptante_id']) . "</p>";
-        echo "<p>Trabajador ID: " . htmlspecialchars($adopcion['trabajador_id']) . "</p>";
-        echo "<p>Motivo de cancelación: " . htmlspecialchars($adopcion['motivo_cancelacion']) . "</p>";
+        echo "<h3>Adopción de " . $data['mascotas'][$adopcion['mascota_id']] . "</h3>";
+        echo "<p>Fecha de adopción: " . $adopcion['fecha_adopcion'] . "</p>";
+        echo "<p>Estado: " . $data['estados'][$adopcion['estado_id']] . "</p>";
+        echo "<p>Adoptante: " . $data['adoptantes'][$adopcion['adoptante_id']] . "</p>";
+        echo "<p>Trabajador: " . $data['trabajadores'][$adopcion['trabajador_id']] . "</p>";
+        echo "<p>Motivo de cancelación: " . $adopcion['motivo_cancelacion'] . "</p>";
         echo "</div>";
     }
     ?>

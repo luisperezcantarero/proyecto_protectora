@@ -20,9 +20,6 @@
         <label for="edad">Edad:</label>
         <input type="number" id="edad" name="edad" min="0"><br><br>
 
-        <label for="estado">Estado:</label>
-        <input type="text" id="estado" name="estado_id"><br><br>
-
         <label for="historial_medico">Historial médico:</label>
         <textarea id="historial_medico" name="historial_medico"></textarea><br><br>
 

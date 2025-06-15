@@ -22,11 +22,11 @@ if ($isLogged) {
     <h2>Crea tu cuenta:</h2>
     <form method="post">
         <label for="nombre">Nombre de usuario:</label>
-        <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($data['nombre']); ?>">
+        <input type="text" id="nombre" name="nombre" value="<?php echo $data['nombre']; ?>">
         <span style="color: red;"><?php echo $data['nombreError'] ?? ''; ?></span>
         <br>
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($data['email']); ?>">
+        <input type="email" id="email" name="email" value="<?php echo $data['email']; ?>">
         <span style="color: red;"><?php echo $data['emailError'] ?? ''; ?></span>
         <br>
         <label for="password">Contraseña:</label>

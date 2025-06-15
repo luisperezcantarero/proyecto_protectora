@@ -149,9 +149,9 @@ class Mascotas extends DBAbstractModel {
         return $this->rows;
     }
 
-    public function getMascota() {
+    public function getMascota($id) {
         $this->query = "SELECT * FROM mascotas WHERE id = :id";
-        $this->parametros['id'] = $this->id;
+        $this->parametros['id'] = $id;
         $this->get_results_from_query();
         if (count($this->rows) > 0) {
             $this->mensaje = "Mascota encontrada";

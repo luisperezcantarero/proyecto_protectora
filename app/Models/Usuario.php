@@ -242,8 +242,17 @@ class Usuario extends DBAbstractModel {
         return null;
     }
 
-    protected function get() {}
-    protected function edit() {}
-    protected function delete() {}
+    public function get($id = '') {
+        $this->query = "SELECT * FROM usuarios WHERE id = :id";
+        $this->parametros['id'] = $id;
+        $this->get_results_from_query();
+        if (count($this->rows) > 0) {
+            return $this->rows[0];
+        } else {
+            return null;
+        }
+    }
+    public function edit() {}
+    public function delete() {}
 }
 ?>

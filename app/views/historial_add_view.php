@@ -16,7 +16,7 @@
         <select name="tipo_id" id="tipo_id">
             <?php
             foreach ($data['tipos_seguimiento'] as $tipo) {
-                echo "<option value='" . htmlspecialchars($tipo['id']) . "'>" . htmlspecialchars($tipo['nombre']) . "</option>";
+                echo "<option value='" . $tipo['id'] . "'>" . $tipo['nombre'] . "</option>";
             }
             ?>
         </select><br/><br/>

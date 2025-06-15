@@ -70,18 +70,50 @@ class AdopcionesController extends BaseController {
     public function mostrarAdopcionesAction($request) {
         $adopcion = Adopciones::getInstance();
         $encuesta = Encuestas::getInstance();
+        $usuarioModel = Usuario::getInstance();
+        $mascotaModel = Mascotas::getInstance();
 
         // Actualizar el estado de las adopciones que tienen más de 15 días
         $adopcion->actualizarAdopcionesDiaLimite($_SESSION['id']);
 
         $data['adopciones'] = $adopcion->getAdopcionesEnCursoByAdoptante($_SESSION['id']);
-
-        $adopcionesFinalizadas = $adopcion->getAdopcionesFinalizadasByAdoptante($_SESSION['id']);
-        foreach ($adopcionesFinalizadas as $key => $adopcionFinalizada) {
-            $adopcionesFinalizadas[$key]['tiene_encuesta'] = $encuesta->getEncuestaExistente($adopcionFinalizada['id']);
-        }
-        $data['adopciones_finalizadas'] = $adopcionesFinalizadas;
+        $data['adopciones_finalizadas'] = $adopcion->getAdopcionesFinalizadasByAdoptante($_SESSION['id']);
         $data['adopciones_canceladas'] = $adopcion->getAdopcionesCanceladasByAdoptante($_SESSION['id']);
+
+        // Prepara los nombres de adoptante y trabajador para cada adopción
+        $data['adoptantes'] = [];
+        $data['trabajadores'] = [];
+        $data['estados'] = [];
+
+        foreach ($adopcion->getEstadosAdopcion() as $estado) {
+            $data['estados'][$estado['id']] = $estado['nombre'];
+        }
+
+        foreach (['adopciones', 'adopciones_finalizadas', 'adopciones_canceladas'] as $tipo) {
+            foreach ($data[$tipo] as $adopcionTipo) {
+                // Adoptante
+                if (!isset($data['adoptantes'][$adopcionTipo['adoptante_id']])) {
+                    $adoptante = $usuarioModel->get($adopcionTipo['adoptante_id']);
+                    $data['adoptantes'][$adopcionTipo['adoptante_id']] = $adoptante['nombre'];
+                }
+                // Trabajador
+                if (!isset($data['trabajadores'][$adopcionTipo['trabajador_id']])) {
+                    $trabajador = $usuarioModel->get($adopcionTipo['trabajador_id']);
+                    $data['trabajadores'][$adopcionTipo['trabajador_id']] = $trabajador['nombre'];
+                }
+                // Mascota
+                if (!isset($data['mascotas'][$adopcionTipo['mascota_id']])) {
+                    $mascota = $mascotaModel->getMascota($adopcionTipo['mascota_id']);
+                    $data['mascotas'][$adopcionTipo['mascota_id']] = $mascota['nombre'];
+                }
+            }
+        }
+
+        // Añade el campo 'tiene_encuesta' a las finalizadas
+        foreach ($data['adopciones_finalizadas'] as $key => $adopcionFinalizada) {
+            $data['adopciones_finalizadas'][$key]['tiene_encuesta'] = $encuesta->getEncuestaExistente($adopcionFinalizada['id']);
+        }
+
         $data['mensaje'] = 'Estas son tus adopciones:';
         $this->renderHTML('../app/views/mostrar_adopciones_view.php', $data);
     }

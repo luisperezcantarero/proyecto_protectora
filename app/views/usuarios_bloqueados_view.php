@@ -15,9 +15,8 @@
         <?php
         foreach ($data['bloqueados'] as $usuario) {
             echo '<div>';
-            echo '<input type="checkbox" name="usuarios[]" value="' . htmlspecialchars($usuario['email']) . '" ' . $data['checked'] . '>';
-            echo htmlspecialchars($usuario['nombre']) . ' - ';
-            echo htmlspecialchars($usuario['email']);
+            echo '<input type="checkbox" name="usuarios[]" value="' . $usuario['email'] . '" ' . $data['checked'] . '>';
+            echo $usuario['nombre'] . ' - ' . $usuario['email'];
             echo '</div>';
         }
         ?>

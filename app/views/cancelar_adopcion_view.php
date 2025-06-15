@@ -9,13 +9,13 @@
     <h2>Cancelar la adopción</h2>
     <?php
     if (!empty($data['error'])) {
-        echo "<p style='color: red;'>" . htmlspecialchars($data['error']) . "</p>";
+        echo "<p style='color: red;'>" . $data['error'] . "</p>";
     }
     ?>
     <form method="POST" action="/adopciones/cancelar">
         <label for="motivo_cancelacion">Motivo de la cancelación:</label>
         <textarea id="motivo_cancelacion" name="motivo_cancelacion"></textarea>
-        <input type="hidden" name="adopcion_id" value="<?php echo htmlspecialchars($data['adopcion_id']); ?>">
+        <input type="hidden" name="adopcion_id" value="<?php echo $data['adopcion_id']; ?>">
         <button type="submit">Cancelar adopción</button>
     </form>
 </body>

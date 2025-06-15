@@ -9,7 +9,7 @@
     <h2>Encuesta de Adopción</h2>
     <?php
     if (!empty($data['errorEncuesta'])) {
-        echo "<p style='color: red;'>" . htmlspecialchars($data['errorEncuesta']) . "</p>";
+        echo "<p style='color: red;'>" . $data['errorEncuesta'] . "</p>";
     }
     ?>
     <form method="POST">
@@ -19,7 +19,7 @@
             <option value="">Seleccione...</option>
             <?php
             foreach ($data['estados_salud'] as $estado) {
-                echo "<option value='" . htmlspecialchars($estado['id']) . "'>" . htmlspecialchars($estado['nombre']) . "</option>";
+                echo "<option value='" . $estado['id'] . "'>" . $estado['nombre'] . "</option>";
             }
             ?>
         </select><br/><br/>
@@ -28,7 +28,7 @@
             <option value="">Seleccione...</option>
             <?php
             foreach ($data['adaptaciones'] as $adaptacion) {
-                echo "<option value='" . htmlspecialchars($adaptacion['id']) . "'>" . htmlspecialchars($adaptacion['nombre']) . "</option>";
+                echo "<option value='" . $adaptacion['id'] . "'>" . $adaptacion['nombre'] . "</option>";
             }
             ?>
         </select><br/><br/>
