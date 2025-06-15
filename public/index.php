@@ -10,6 +10,7 @@ use App\Controllers\MascotasController;
 use App\Controllers\AdminController;
 use App\Controllers\AdopcionesController;
 use App\Controllers\EncuestasController;
+use App\Controllers\SeguimientosController;
 
 $router = new Router();
 
@@ -106,6 +107,20 @@ $router->add([
     'path' => '/^\/encuestas\/encuesta\/?$/',
     'action' => [EncuestasController::class, 'encuestaAction'],
     'profile' => ['adoptante']
+]);
+
+$router->add([
+    'name' => 'seguimientos_listar',
+    'path' => '/^\/seguimientos\/listar$/',
+    'action' => [SeguimientosController::class, 'listarAllAdopciones'],
+    'profile' => ['trabajador', 'administrador']
+]);
+
+$router->add([
+    'name' => 'seguimientos_add',
+    'path' => '/^\/seguimientos\/add\/?$/',
+    'action' => [SeguimientosController::class, 'addObservacionesAction'],
+    'profile' => ['trabajador', 'administrador']
 ]);
 
 $request = explode('?', $_SERVER['REQUEST_URI'])[0];

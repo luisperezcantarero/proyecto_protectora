@@ -19,9 +19,11 @@ require_once "../app/Config/conf.php";
         echo "<p>Bienvenido administrador " . $_SESSION['nombre'] . " </p>";
         echo '<p><a href="/admin/bloqueados">Ver usuarios bloqueados</a></p>';
         echo '<p>Añadir mascota <a href="/mascotas/add">Agregar</a></p>';
+        echo '<p><a href="/seguimientos/listar">Ver seguimientos</a></p>';
     } else if ($profile === "trabajador") {
         echo "<p>Bienvenido Trabajador " . $_SESSION['nombre'] . " </p>";
         echo '<p><a href="/adopciones/asignar">Asignar adoptante a mascota</a></p>';
+        echo '<p><a href="/seguimientos/listar">Ver seguimientos</a></p>';
     }
     if ($isLogged) {
         echo "<p><a href='/usuarios/logout'>Cerrar sesión</a></p>";

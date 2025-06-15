@@ -235,5 +235,11 @@ class Adopciones extends DBAbstractModel {
             return false;
         }
     }
+
+    public function getAllAdopciones() {
+        $this->query = "SELECT * FROM adopciones";
+        $this->get_results_from_query();
+        return $this->rows;
+    }
 }
 ?>
