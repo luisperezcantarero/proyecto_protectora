@@ -9,6 +9,7 @@ use App\Controllers\AuthController;
 use App\Controllers\MascotasController;
 use App\Controllers\AdminController;
 use App\Controllers\AdopcionesController;
+use App\Controllers\EncuestasController;
 
 $router = new Router();
 
@@ -97,6 +98,13 @@ $router->add([
     'name' => 'adopciones_cancelar',
     'path' => '/^\/adopciones\/cancelar\/?$/',
     'action' => [AdopcionesController::class, 'cancelarAdopcionAction'],
+    'profile' => ['adoptante']
+]);
+
+$router->add([
+    'name' => 'encuestas_encuesta',
+    'path' => '/^\/encuestas\/encuesta\/?$/',
+    'action' => [EncuestasController::class, 'encuestaAction'],
     'profile' => ['adoptante']
 ]);
 

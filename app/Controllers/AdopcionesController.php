@@ -1,9 +1,9 @@
 <?php
-// TODO: QUE UN USUARIO NO PUEDA CANCELAR UNA ADOPCIÓN QUE NO SEA SUYA
 namespace App\Controllers;
 use App\Models\Adopciones;
 use App\Models\Mascotas;
 use App\Models\Usuario;
+use App\Models\Encuestas;
 
 class AdopcionesController extends BaseController {
     public function asignarAdoptanteAction($request) {
@@ -69,7 +69,19 @@ class AdopcionesController extends BaseController {
 
     public function mostrarAdopcionesAction($request) {
         $adopcion = Adopciones::getInstance();
+        $encuesta = Encuestas::getInstance();
+
+        // Actualizar el estado de las adopciones que tienen más de 15 días
+        $adopcion->actualizarAdopcionesDiaLimite($_SESSION['id']);
+
         $data['adopciones'] = $adopcion->getAdopcionesEnCursoByAdoptante($_SESSION['id']);
+
+        $adopcionesFinalizadas = $adopcion->getAdopcionesFinalizadasByAdoptante($_SESSION['id']);
+        foreach ($adopcionesFinalizadas as $key => $adopcionFinalizada) {
+            $adopcionesFinalizadas[$key]['tiene_encuesta'] = $encuesta->getEncuestaExistente($adopcionFinalizada['id']);
+        }
+        $data['adopciones_finalizadas'] = $adopcionesFinalizadas;
+        $data['adopciones_canceladas'] = $adopcion->getAdopcionesCanceladasByAdoptante($_SESSION['id']);
         $data['mensaje'] = 'Estas son tus adopciones:';
         $this->renderHTML('../app/views/mostrar_adopciones_view.php', $data);
     }

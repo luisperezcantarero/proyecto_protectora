@@ -186,7 +186,8 @@ class Usuario extends DBAbstractModel {
 
     // Método para obtener usuarios bloqueados
     public function getUsuariosBloqueados() {
-        $this->query = "SELECT * FROM usuarios WHERE bloqueado = 1";
+        $this->query = "SELECT * FROM usuarios WHERE bloqueado = :bloqueado";
+        $this->parametros['bloqueado'] = 1; // 1 indica que el usuario está bloqueado
         $this->get_results_from_query();
         if (is_array($this->rows)) {
             return $this->rows;
@@ -231,8 +232,9 @@ class Usuario extends DBAbstractModel {
     }
 
     public function getAdoptanteIdByEmail($email) {
-        $this->query = "SELECT id FROM usuarios WHERE email = :email AND rol_id = 3";
+        $this->query = "SELECT id FROM usuarios WHERE email = :email AND rol_id = :rol_id";
         $this->parametros['email'] = $email;
+        $this->parametros['rol_id'] = 3;
         $this->get_results_from_query();
         if (count($this->rows) === 1) {
             return $this->rows[0]['id'];

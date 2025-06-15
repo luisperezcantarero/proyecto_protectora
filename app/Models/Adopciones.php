@@ -156,8 +156,9 @@ class Adopciones extends DBAbstractModel {
     }
 
     public function mascotaAdoptadaAlready($mascota_id) {
-        $this->query = "SELECT id FROM adopciones WHERE mascota_id = :mascota_id AND estado_id = 3";
+        $this->query = "SELECT id FROM adopciones WHERE mascota_id = :mascota_id AND estado_id = :estado_id";
         $this->parametros['mascota_id'] = $mascota_id;
+        $this->parametros['estado_id'] = 3;
         $this->get_results_from_query();
         if (count($this->rows) > 0) {
             return true;
@@ -166,9 +167,35 @@ class Adopciones extends DBAbstractModel {
         }
     }
 
-    public function getAdopcionesEnCursoByAdoptante($adoptante_id) {
-        $this->query = "SELECT * FROM adopciones WHERE adoptante_id = :adoptante_id AND estado_id = 1";
+    public function actualizarAdopcionesDiaLimite($adoptante_id) {
+        $this->query = "UPDATE adopciones SET estado_id = :estado_id WHERE adoptante_id = :adoptante_id AND estado_id = :estado_id_anterior AND fecha_adopcion < :fecha_limite";
+        $this->parametros['estado_id'] = 3;
         $this->parametros['adoptante_id'] = $adoptante_id;
+        $this->parametros['estado_id_anterior'] = 1;
+        $this->parametros['fecha_limite'] = date('Y-m-d H:i:s', strtotime('-15 days'));
+        $this->get_results_from_query();
+    }
+
+    public function getAdopcionesFinalizadasByAdoptante($adoptante_id) {
+        $this->query = "SELECT * FROM adopciones WHERE adoptante_id = :adoptante_id AND estado_id = :estado_id";
+        $this->parametros['adoptante_id'] = $adoptante_id;
+        $this->parametros['estado_id'] = 3; // Estado finalizado
+        $this->get_results_from_query();
+        return $this->rows;
+    }
+
+    public function getAdopcionesEnCursoByAdoptante($adoptante_id) {
+        $this->query = "SELECT * FROM adopciones WHERE adoptante_id = :adoptante_id AND estado_id = :estado_id";
+        $this->parametros['adoptante_id'] = $adoptante_id;
+        $this->parametros['estado_id'] = 1; // Estado en curso
+        $this->get_results_from_query();
+        return $this->rows;
+    }
+
+    public function getAdopcionesCanceladasByAdoptante($adoptante_id) {
+        $this->query = "SELECT * FROM adopciones WHERE adoptante_id = :adoptante_id AND estado_id = :estado_id";
+        $this->parametros['adoptante_id'] = $adoptante_id;
+        $this->parametros['estado_id'] = 2; // Estado cancelado
         $this->get_results_from_query();
         return $this->rows;
     }
