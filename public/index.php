@@ -8,6 +8,7 @@ use App\Core\Router;
 use App\Controllers\AuthController;
 use App\Controllers\MascotasController;
 use App\Controllers\AdminController;
+use App\Controllers\AdopcionesController;
 
 $router = new Router();
 
@@ -76,6 +77,27 @@ $router->add([
     'path' => '/^\/admin\/desbloquear$/',
     'action' => [AdminController::class, 'desbloquearUsuariosAction'],
     'profile' => ['administrador']
+]);
+
+$router->add([
+    'name' => 'adopciones_asignar',
+    'path' => '/^\/adopciones\/asignar$/',
+    'action' => [AdopcionesController::class, 'asignarAdoptanteAction'],
+    'profile' => ['trabajador']
+]);
+
+$router->add([
+    'name' => 'adopciones_mostrar',
+    'path' => '/^\/adopciones\/mostrar$/',
+    'action' => [AdopcionesController::class, 'mostrarAdopcionesAction'],
+    'profile' => ['adoptante']
+]);
+
+$router->add([
+    'name' => 'adopciones_cancelar',
+    'path' => '/^\/adopciones\/cancelar\/?$/',
+    'action' => [AdopcionesController::class, 'cancelarAdopcionAction'],
+    'profile' => ['adoptante']
 ]);
 
 $request = explode('?', $_SERVER['REQUEST_URI'])[0];

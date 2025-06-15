@@ -161,5 +161,15 @@ class Mascotas extends DBAbstractModel {
             return null;
         }
     }
+
+    public function getMascotaIdByNombre($nombre) {
+        $this->query = "SELECT id FROM mascotas WHERE nombre = :nombre";
+        $this->parametros['nombre'] = $nombre;
+        $this->get_results_from_query();
+        if (count($this->rows) === 1) {
+            return $this->rows[0]['id'];
+        }
+        return null;
+    }
 }
 ?>

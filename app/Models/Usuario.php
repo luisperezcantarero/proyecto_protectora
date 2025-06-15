@@ -230,6 +230,16 @@ class Usuario extends DBAbstractModel {
         }
     }
 
+    public function getAdoptanteIdByEmail($email) {
+        $this->query = "SELECT id FROM usuarios WHERE email = :email AND rol_id = 3";
+        $this->parametros['email'] = $email;
+        $this->get_results_from_query();
+        if (count($this->rows) === 1) {
+            return $this->rows[0]['id'];
+        }
+        return null;
+    }
+
     protected function get() {}
     protected function edit() {}
     protected function delete() {}

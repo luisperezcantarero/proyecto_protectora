@@ -6,7 +6,6 @@ use App\Core\EmailSender;
 
 class AuthController extends BaseController {
     public function IndexAction() {
-        $data['location'] = 'index';
         $data['message'] = 'Página principal de protectora';
         $this->renderHTML('../app/views/index_view.php', $data);
     }
@@ -16,7 +15,6 @@ class AuthController extends BaseController {
         if (isset($_SESSION['nombre'])) {
             header('Location: /');
         }
-        $data['location'] = 'register';
         $data['message'] = 'Registro de usuario';
         $data['error'] = '';
 
@@ -88,7 +86,6 @@ class AuthController extends BaseController {
     }
 
     public function loginAction($request) {
-        $data['location'] = 'login';
         $data['message'] = 'Iniciar sesión';
         $data['email'] = $data['password'] = '';
         $data['error'] = '';

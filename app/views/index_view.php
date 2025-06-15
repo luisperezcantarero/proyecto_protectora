@@ -14,12 +14,14 @@ require_once "../app/Config/conf.php";
         echo "<p>Bienvenido, visitante. Por favor, <a href='/usuarios/login'>inicia sesión</a> o <a href='/usuarios/register'>regístrate</a>.</p>";
     } else if ($profile === "adoptante") {
         echo "<p>Bienvenido Adoptante " . $_SESSION['nombre'] . " </p>";
+        echo '<p><a href="/adopciones/mostrar">Mostrar adopciones</a></p>';
     } else if ($profile === "administrador"){
         echo "<p>Bienvenido administrador " . $_SESSION['nombre'] . " </p>";
         echo '<p><a href="/admin/bloqueados">Ver usuarios bloqueados</a></p>';
         echo '<p>Añadir mascota <a href="/mascotas/add">Agregar</a></p>';
     } else if ($profile === "trabajador") {
-        echo "<p>Bienvenido Trabajador " . $_SESSION['nombre'] . " </p>"; 
+        echo "<p>Bienvenido Trabajador " . $_SESSION['nombre'] . " </p>";
+        echo '<p><a href="/adopciones/asignar">Asignar adoptante a mascota</a></p>';
     }
     if ($isLogged) {
         echo "<p><a href='/usuarios/logout'>Cerrar sesión</a></p>";
