@@ -22,10 +22,12 @@ class EncuestasController extends BaseController {
             header('Location: /adopciones/mostrar/');
         }
 
-        $data['adopcion'] = $adopcion_data;
+        $procesaFormulario = true;
         $data['errorEncuesta'] = '';
+        $data['adopcion'] = $adopcion_data;
         $data['estados_salud'] = $encuesta->getEstadosSalud();
         $data['adaptaciones'] = $encuesta->getAdaptaciones();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $estado_salud_id = $_POST['estado_salud_id'];
             $adaptacion_id = $_POST['adaptacion_id'];
@@ -33,7 +35,10 @@ class EncuestasController extends BaseController {
 
             if (!$estado_salud_id || !$adaptacion_id) {
                 $data['errorEncuesta'] = 'Por favor, complete todos los campos obligatorios.';
-            } else {
+                $procesaFormulario = false;
+            }
+            
+            if ($procesaFormulario) {
                 $encuesta->setAdopcionId($adopcion_id);
                 $encuesta->setFechaEnvio(date('Y-m-d H:i:s'));
                 $encuesta->setFechaRespuesta(date('Y-m-d H:i:s'));

@@ -29,7 +29,6 @@ class SeguimientosController extends BaseController {
 
         $seguimientosModel = Seguimientos::getInstance();
         $adopciones = Adopciones::getInstance();
-        // TODO: revisar esto
         $adopcion = $adopciones->get($adopcion_id);
         if (!in_array($adopcion['estado_id'], [2, 3])) {
             header('Location: /seguimientos/listar');
@@ -40,21 +39,32 @@ class SeguimientosController extends BaseController {
         }
 
         $data['error'] = '';
+        $procesaFormulario = true;
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $resultado = $_POST['resultado'];
             $observaciones = $_POST['observaciones'];
             $tipo_id = $_POST['tipo_id'];
             $fecha = date('Y-m-d H:i:s');
-            $seguimientosModel->setAdopcionId($adopcion_id);
-            $seguimientosModel->setTrabajadorId($_SESSION['id']);
-            $seguimientosModel->setFecha($fecha);
-            $seguimientosModel->setTipoId($tipo_id);
-            $seguimientosModel->setResultado($resultado);
-            $seguimientosModel->setObservaciones($observaciones);
-            $seguimientosModel->setCreatedAt($fecha);
-            $seguimientosModel->setUpdatedAt($fecha);
-            $seguimientosModel->set();
-            header('Location: /seguimientos/listar');
+
+            if (!$resultado || !$observaciones || !$tipo_id) {
+                $data['error'] = 'Por favor, complete todos los campos obligatorios.';
+                $procesaFormulario = false;
+            }
+
+            if ($procesaFormulario) {
+                $fecha = date('Y-m-d H:i:s');
+                $seguimientosModel->setAdopcionId($adopcion_id);
+                $seguimientosModel->setTrabajadorId($_SESSION['id']);
+                $seguimientosModel->setFecha($fecha);
+                $seguimientosModel->setTipoId($tipo_id);
+                $seguimientosModel->setResultado($resultado);
+                $seguimientosModel->setObservaciones($observaciones);
+                $seguimientosModel->setCreatedAt($fecha);
+                $seguimientosModel->setUpdatedAt($fecha);
+                $seguimientosModel->set();
+                header('Location: /seguimientos/listar');
+            }
         }
         $data['adopcion'] = $adopcion;
         $data['tipos_seguimiento'] = $seguimientosModel->getTiposSeguimiento();
