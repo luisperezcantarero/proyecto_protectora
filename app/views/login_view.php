@@ -23,10 +23,10 @@ $nums = $_SESSION['captcha_nums'];
     <form action="" method="post">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email"><br>
-        <span style="color: red;"><?php echo $data['emailError'] ?? ''; ?></span><br>
+        <span style="color: red;"><?php echo $data['emailError']; ?></span><br>
         <label for="password">Contraseña</label>
         <input type="password" id="password" name="password"><br>
-        <span style="color: red;"><?php echo $data['passwordError'] ?? ''; ?></span><br>
+        <span style="color: red;"><?php echo $data['passwordError']; ?></span><br>
         <label for="captcha">Indique el mayor de estos números:</label>
         <?php
         echo implode(" ", $nums);

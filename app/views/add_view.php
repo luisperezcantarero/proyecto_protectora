@@ -7,7 +7,7 @@
 </head>
 <body>
     <h2>Añadir mascota</h2>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre"><br><br>
 
@@ -23,8 +23,8 @@
         <label for="historial_medico">Historial médico:</label>
         <textarea id="historial_medico" name="historial_medico"></textarea><br><br>
 
-        <label for="foto">Foto:</label>
-        <input type="text" id="foto" name="foto"><br><br>
+        <label for="foto_mascota">Foto:</label>
+        <input type="file" id="foto_mascota" name="foto_mascota" accept="images/*"><br><br>
 
         <input type="submit" value="Añadir">
     </form>

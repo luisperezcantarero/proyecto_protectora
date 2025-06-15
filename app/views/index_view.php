@@ -7,6 +7,7 @@ require_once "../app/Config/conf.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Principal</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <?php
@@ -40,7 +41,7 @@ require_once "../app/Config/conf.php";
         echo "<p>Raza: " . $mascota['raza'] . "</p>";
         echo "<p>Edad: " . $mascota['edad'] . "</p>";
         echo "<p>Historial médico: " . $mascota['historial_medico'] . "</p>";
-        echo "<img src='" . $mascota['foto'] . "' alt='mascota' >";
+        echo "<img src='/imagenes/" . $mascota['foto'] . "' alt='mascota' >";
         if ($profile === "administrador") {
             echo '<a href="/mascotas/edit/?id=' . $mascota['id'] . '">Editar</a>';
             echo ' <a href="/mascotas/delete/?id=' . $mascota['id'] . '">Borrar</a>';
