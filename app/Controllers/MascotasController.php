@@ -97,12 +97,29 @@ class MascotasController extends BaseController {
     }
 
     public function editMascotaAction($request) {
-        // Verificamos si se ha pasado un ID de mascota
         if (isset($_GET['id'])) {
             $modeloMascota = Mascotas::getInstance();
             $id = $_GET['id'];
             $mascota = $modeloMascota->getMascota($id);
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $fotoMascota = $mascota['foto']; // Mantener la imagen actual por defecto
+
+                // Si se sube una nueva imagen
+                if (isset($_FILES['foto_mascota']) && $_FILES['foto_mascota']['error'] == 0) {
+                    $extensionesPermitidas = ['jpg', 'jpeg', 'png'];
+                    $extension = strtolower(pathinfo($_FILES['foto_mascota']['name'], PATHINFO_EXTENSION));
+                    if (in_array($extension, $extensionesPermitidas) && $_FILES['foto_mascota']['size'] < 2000000) {
+                        $nombreUnico = uniqid() . '.' . $extension;
+                        move_uploaded_file(
+                            $_FILES['foto_mascota']['tmp_name'],
+                            dirname(__DIR__, 2) . '/public/imagenes/' . $nombreUnico
+                        );
+                        $fotoMascota = $nombreUnico;
+                    }
+                    // Si no es válida, se ignora y se mantiene la anterior
+                }
+
                 $modeloMascota->setId($id);
                 $modeloMascota->setNombre($_POST['nombre']);
                 $modeloMascota->setEspecie($_POST['especie']);
@@ -110,15 +127,15 @@ class MascotasController extends BaseController {
                 $modeloMascota->setEdad($_POST['edad']);
                 $modeloMascota->setEstado(1); // Mantenemos el estado en adopción
                 $modeloMascota->setHistorial($_POST['historial_medico']);
-                $modeloMascota->setFoto($_POST['foto']);
+                $modeloMascota->setFoto($fotoMascota);
                 $modeloMascota->setUpdatedAt(date('Y-m-d H:i:s'));
                 $modeloMascota->edit();
                 header('Location: /');
             }
+
             $data['mascota'] = $mascota;
             $this->renderHTML('../app/views/edit_view.php', $data);
         } else {
-            // Si no se encuentra la mascota, redirigimos al listado
             header('Location: /');
         }
     }

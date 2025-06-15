@@ -7,7 +7,7 @@
 </head>
 <body>
     <h2>Editar mascota</h2>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<?php echo $data['mascota']['id']; ?>"/>
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" value="<?php echo $data['mascota']['nombre']; ?>"><br><br>
@@ -19,8 +19,8 @@
         <input type="number" id="edad" name="edad" value="<?php echo $data['mascota']['edad']; ?>" min="0"><br><br>
         <label for="historial_medico">Historial médico:</label>
         <textarea id="historial_medico" name="historial_medico"><?php echo $data['mascota']['historial_medico']; ?></textarea><br><br>
-        <label for="foto">Foto:</label>
-        <input type="text" id="foto" name="foto" value="<?php echo $data['mascota']['foto']; ?>"><br><br>
+        <label for="foto_mascota">Nueva foto (opcional):</label>
+        <input type="file" id="foto_mascota" name="foto_mascota" accept="image/*"><br><br>
         <input type="submit" value="Guardar cambios">
     </form>
 </body>
