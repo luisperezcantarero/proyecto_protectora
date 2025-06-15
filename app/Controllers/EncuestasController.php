@@ -17,6 +17,13 @@ class EncuestasController extends BaseController {
             header('Location: /adopciones/mostrar/');
         }
 
+        $mascota_nombre = '';
+        if (isset($adopcion_data['mascota_id'])) {
+            $mascotaModel = \App\Models\Mascotas::getInstance();
+            $mascota = $mascotaModel->getMascota($adopcion_data['mascota_id']);
+            $mascota_nombre = $mascota['nombre'] ?? '';
+        }
+
         // Verificar si ya existe una encuesta para esta adopción
         if ($encuesta->getEncuestaExistente($adopcion_id)) {
             header('Location: /adopciones/mostrar/');
@@ -27,6 +34,8 @@ class EncuestasController extends BaseController {
         $data['adopcion'] = $adopcion_data;
         $data['estados_salud'] = $encuesta->getEstadosSalud();
         $data['adaptaciones'] = $encuesta->getAdaptaciones();
+        $data['adopcion'] = $adopcion_data;
+        $data['mascota_nombre'] = $mascota_nombre;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $estado_salud_id = $_POST['estado_salud_id'];

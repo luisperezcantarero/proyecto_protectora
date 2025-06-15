@@ -167,7 +167,7 @@ class AuthController extends BaseController {
                     $newUser->setIntentosFallidos($data['email'], 0); // Reiniciar intentos fallidos en la base de datos
                     header('Location: /');
                 } else {
-                    $data['error'] = $newUser->getMessage();
+                    $data['error'] = 'Email o contraseña incorrectos.';
                     $falloIntento = true;
                 }
             }

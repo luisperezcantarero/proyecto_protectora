@@ -12,28 +12,34 @@ $nums = $_SESSION['captcha_nums'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <?php
-    if (!empty($data['error'])) {
-        echo "<p style='color: red;'>{$data['error']}</p>";
-    }
-    ?>
-    <h2>Inciar sesión</h2>
-    <form action="" method="post">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email"><br>
-        <span style="color: red;"><?php echo $data['emailError']; ?></span><br>
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password"><br>
-        <span style="color: red;"><?php echo $data['passwordError']; ?></span><br>
-        <label for="captcha">Indique el mayor de estos números:</label>
+    <div class="login-container">
         <?php
-        echo implode(" ", $nums);
+        if (!empty($data['error'])) {
+            echo "<p class='login-error'>{$data['error']}</p>";
+        }
         ?>
-        <input type="number" id="captcha" name="captcha"><br>
-        <button type="submit">Iniciar sesión</button>
-    </form>
-    <p style="color: orange;">Intentos fallidos: <?php echo $data['intentos']; ?> / 3</p>
+        <h2 class="login-title">Iniciar sesión</h2>
+        <form class="login-form" action="" method="post">
+            <label for="email">Email:</label>
+            <input class="login-input" type="email" id="email" name="email">
+            <span class="login-error-msg"><?php echo $data['emailError']; ?></span>
+
+            <label for="password">Contraseña</label>
+            <input class="login-input" type="password" id="password" name="password">
+            <span class="login-error-msg"><?php echo $data['passwordError']; ?></span>
+
+            <label for="captcha">Indique el mayor de estos números:</label>
+            <div class="login-captcha-numbers"><?php echo implode(" ", $nums); ?></div>
+            <input class="login-input" type="number" id="captcha" name="captcha">
+
+            <button class="login-btn" type="submit">Iniciar sesión</button>
+        </form>
+        <div class="login-back-link">
+            <a href="/">Volver a inicio</a>
+        </div>
+    </div>
 </body>
 </html>

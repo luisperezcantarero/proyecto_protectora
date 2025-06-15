@@ -1,0 +1,826 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;   
+}
+
+header {
+    background: linear-gradient(90deg, #e3f0ff 0%, #b3d8ff 100%);
+    padding: 1.5rem 0 1rem 0;
+    box-shadow: 0 2px 8px rgba(50, 100, 200, 0.08);
+    border-bottom: 3px solid #7bb6fa;
+}
+
+header h1 {
+    color: #2563eb;
+    text-align: center;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: 2px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-shadow: 0 2px 8px #b3d8ff55;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+}
+
+ul.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1.5rem;
+}
+
+ul.nav-links li {
+    background: #e0edff;
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px rgba(120, 180, 255, 0.08);
+    font-size: 1rem;
+}
+
+ul.nav-links li:hover {
+    background: #c7e0ff;
+    box-shadow: 0 2px 8px rgba(120, 180, 255, 0.15);
+}
+
+ul.nav-links a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+ul.nav-links a:hover {
+    color: #174ea6;
+    text-decoration: underline;
+}
+
+.main-content {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.titulo-listado {
+    text-align: center;
+    color: #2563eb;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.mascotas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.mascota-card {
+    background: #fafdff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(120,180,255,0.10);
+    padding: 1.5rem 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.2s, transform 0.2s;
+    border: 1px solid #e3f0ff;
+}
+
+.mascota-card:hover {
+    box-shadow: 0 8px 24px rgba(37,99,235,0.15);
+    transform: translateY(-4px) scale(1.02);
+}
+
+.mascota-foto {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #b3d8ff;
+    margin-bottom: 1rem;
+    background: #e3f0ff;
+}
+
+.mascota-info {
+    width: 100%;
+    text-align: center;
+}
+
+.mascota-nombre {
+    color: #174ea6;
+    margin: 0.5rem 0 1rem 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.mascota-info p {
+    margin: 0.3rem 0;
+    font-size: 1rem;
+}
+
+.mascota-acciones {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn-editar, .btn-borrar {
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-editar {
+    background: #e0edff;
+    color: #2563eb;
+    border: 1px solid #7bb6fa;
+}
+
+.btn-editar:hover {
+    background: #b3d8ff;
+    color: #174ea6;
+}
+
+.btn-borrar {
+    background: #ffe0e0;
+    color: #d32f2f;
+    border: 1px solid #ffb3b3;
+}
+
+.btn-borrar:hover {
+    background: #ffb3b3;
+    color: #a31515;
+}
+
+.busqueda-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 0.5rem;
+}
+
+.busqueda-input {
+    padding: 0.6rem 1rem;
+    border: 1.5px solid #b3d8ff;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fafdff;
+    color: #174ea6;
+    transition: border 0.2s;
+    outline: none;
+    min-width: 220px;
+}
+
+.busqueda-input:focus {
+    border-color: #2563eb;
+    background: #e3f0ff;
+}
+
+.busqueda-btn {
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(90deg, #b3d8ff 0%, #2563eb 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.busqueda-btn:hover {
+    background: linear-gradient(90deg, #2563eb 0%, #174ea6 100%);
+    box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+}
+
+/* Estilos para el formulario de login */
+.login-container {
+    max-width: 370px;
+    margin: 3rem auto 0 auto;
+    background: #fafdff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(120,180,255,0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    border: 1px solid #e3f0ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-title {
+    color: #2563eb;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.login-input {
+    padding: 0.6rem 1rem;
+    border: 1.5px solid #b3d8ff;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fafdff;
+    color: #174ea6;
+    transition: border 0.2s;
+    outline: none;
+}
+
+.login-input:focus {
+    border-color: #2563eb;
+    background: #e3f0ff;
+}
+
+.login-btn {
+    margin-top: 1rem;
+    padding: 0.7rem 1.2rem;
+    background: linear-gradient(90deg, #b3d8ff 0%, #2563eb 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.login-btn:hover {
+    background: linear-gradient(90deg, #2563eb 0%, #174ea6 100%);
+    box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+}
+
+.login-error {
+    color: #d32f2f;
+    background: #ffe0e0;
+    border: 1px solid #ffb3b3;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.login-error-msg {
+    color: #d32f2f;
+    font-size: 0.95rem;
+    min-height: 1.2em;
+    margin-bottom: 0.2rem;
+}
+
+.login-captcha-numbers {
+    font-weight: bold;
+    color: #2563eb;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.2rem;
+    font-size: 1.1rem;
+}
+
+/* Estilo para el enlace de volver a inicio en el login */
+.login-back-link {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.login-back-link a {
+    color: #2563eb;
+    background: #e0edff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(120, 180, 255, 0.08);
+    border: 1px solid #b3d8ff;
+}
+
+.login-back-link a:hover {
+    background: #b3d8ff;
+    color: #174ea6;
+    text-decoration: underline;
+}
+
+/* Estilos para el formulario de registro */
+.register-container {
+    max-width: 400px;
+    margin: 3rem auto 0 auto;
+    background: #fafdff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(120,180,255,0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    border: 1px solid #e3f0ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register-title {
+    color: #2563eb;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.register-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.register-input {
+    padding: 0.6rem 1rem;
+    border: 1.5px solid #b3d8ff;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fafdff;
+    color: #174ea6;
+    transition: border 0.2s;
+    outline: none;
+}
+
+.register-input:focus {
+    border-color: #2563eb;
+    background: #e3f0ff;
+}
+
+.register-btn {
+    margin-top: 1rem;
+    padding: 0.7rem 1.2rem;
+    background: linear-gradient(90deg, #b3d8ff 0%, #2563eb 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.register-btn:hover {
+    background: linear-gradient(90deg, #2563eb 0%, #174ea6 100%);
+    box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+}
+
+.register-error {
+    color: #d32f2f;
+    background: #ffe0e0;
+    border: 1px solid #ffb3b3;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.register-error-msg {
+    color: #d32f2f;
+    font-size: 0.95rem;
+    min-height: 1.2em;
+    margin-bottom: 0.2rem;
+}
+
+.register-back-link {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.register-back-link a {
+    color: #2563eb;
+    background: #e0edff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(120, 180, 255, 0.08);
+    border: 1px solid #b3d8ff;
+}
+
+.register-back-link a:hover {
+    background: #b3d8ff;
+    color: #174ea6;
+    text-decoration: underline;
+}
+
+/* Estilos para el formulario de añadir mascota */
+.add-mascota-container {
+    max-width: 420px;
+    margin: 3rem auto 0 auto;
+    background: #fafdff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(120,180,255,0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    border: 1px solid #e3f0ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-mascota-title {
+    color: #2563eb;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.add-mascota-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.add-mascota-input {
+    padding: 0.6rem 1rem;
+    border: 1.5px solid #b3d8ff;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fafdff;
+    color: #174ea6;
+    transition: border 0.2s;
+    outline: none;
+}
+
+.add-mascota-input:focus {
+    border-color: #2563eb;
+    background: #e3f0ff;
+}
+
+.add-mascota-btn {
+    margin-top: 1rem;
+    padding: 0.7rem 1.2rem;
+    background: linear-gradient(90deg, #b3d8ff 0%, #2563eb 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.add-mascota-btn:hover {
+    background: linear-gradient(90deg, #2563eb 0%, #174ea6 100%);
+    box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+}
+
+/* Estilo para el enlace de volver a inicio en añadir mascota */
+.add-mascota-back-link {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.add-mascota-back-link a {
+    color: #2563eb;
+    background: #e0edff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(120, 180, 255, 0.08);
+    border: 1px solid #b3d8ff;
+}
+
+.add-mascota-back-link a:hover {
+    background: #b3d8ff;
+    color: #174ea6;
+    text-decoration: underline;
+}
+
+/* Estilos para la vista de usuarios bloqueados */
+.bloqueados-container {
+    max-width: 500px;
+    margin: 3rem auto 0 auto;
+    background: #fafdff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(120,180,255,0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    border: 1px solid #e3f0ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bloqueados-title {
+    color: #2563eb;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.bloqueados-form {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+}
+
+.bloqueados-list {
+    width: 100%;
+    margin-bottom: 1.2rem;
+}
+
+.bloqueado-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: #e0edff;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    box-shadow: 0 1px 4px rgba(120, 180, 255, 0.05);
+}
+
+.bloqueado-checkbox {
+    accent-color: #2563eb;
+    width: 1.1em;
+    height: 1.1em;
+}
+
+.bloqueado-nombre {
+    color: #174ea6;
+    font-weight: 600;
+}
+
+.bloqueado-email {
+    color: #2563eb;
+    font-size: 0.98em;
+}
+
+.bloqueados-btn {
+    padding: 0.5rem 1.2rem;
+    background: linear-gradient(90deg, #b3d8ff 0%, #2563eb 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.bloqueados-btn:hover {
+    background: linear-gradient(90deg, #2563eb 0%, #174ea6 100%);
+    box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+}
+
+.desbloquear-btn {
+    background: linear-gradient(90deg, #7bb6fa 0%, #2563eb 100%);
+}
+
+.bloqueados-back-link {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.bloqueados-back-link a {
+    color: #2563eb;
+    background: #e0edff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(120, 180, 255, 0.08);
+    border: 1px solid #b3d8ff;
+}
+
+.bloqueados-back-link a:hover {
+    background: #b3d8ff;
+    color: #174ea6;
+    text-decoration: underline;
+}
+
+/* Estilos para el formulario de editar mascota */
+.edit-mascota-container {
+    max-width: 420px;
+    margin: 3rem auto 0 auto;
+    background: #fafdff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(120,180,255,0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    border: 1px solid #e3f0ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.edit-mascota-title {
+    color: #2563eb;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.edit-mascota-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.edit-mascota-input {
+    padding: 0.6rem 1rem;
+    border: 1.5px solid #b3d8ff;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fafdff;
+    color: #174ea6;
+    transition: border 0.2s;
+    outline: none;
+}
+
+.edit-mascota-input:focus {
+    border-color: #2563eb;
+    background: #e3f0ff;
+}
+
+.edit-mascota-foto {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #b3d8ff;
+    margin-bottom: 1rem;
+    background: #e3f0ff;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.edit-mascota-btn {
+    margin-top: 1rem;
+    padding: 0.7rem 1.2rem;
+    background: linear-gradient(90deg, #b3d8ff 0%, #2563eb 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.edit-mascota-btn:hover {
+    background: linear-gradient(90deg, #2563eb 0%, #174ea6 100%);
+    box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+}
+
+.edit-mascota-back-link {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.edit-mascota-back-link a {
+    color: #2563eb;
+    background: #e0edff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(120, 180, 255, 0.08);
+    border: 1px solid #b3d8ff;
+}
+
+.edit-mascota-back-link a:hover {
+    background: #b3d8ff;
+    color: #174ea6;
+    text-decoration: underline;
+}
+
+/* Estilos para el historial de adopciones */
+.historial-container {
+    max-width: 1100px;
+    margin: 2.5rem auto 0 auto;
+    background: #fafdff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(120,180,255,0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    border: 1px solid #e3f0ff;
+}
+
+.historial-title {
+    color: #2563eb;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.historial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+    gap: 2rem;
+}
+
+.historial-card {
+    background: #e0edff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(120,180,255,0.08);
+    padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    border: 1px solid #b3d8ff;
+}
+
+.historial-info {
+    margin-bottom: 0.7rem;
+}
+
+.historial-mascota {
+    color: #174ea6;
+    margin: 0 0 0.7rem 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.historial-info p,
+.historial-observaciones p {
+    margin: 0.3rem 0;
+    font-size: 1rem;
+}
+
+.historial-observaciones {
+    background: #fafdff;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    box-shadow: 0 1px 4px rgba(120,180,255,0.05);
+}
+
+.historial-observaciones h4 {
+    color: #2563eb;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.historial-add-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #2563eb;
+    background: #e0edff;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(120, 180, 255, 0.08);
+    border: 1px solid #b3d8ff;
+}
+
+.historial-add-link:hover {
+    background: #b3d8ff;
+    color: #174ea6;
+    text-decoration: underline;
+}
+
+.register-success {
+    color: #2563eb;
+    background: #e0f7fa;
+    border: 1px solid #7bb6fa;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+img {
+    width: 4rem;
+    height: auto;
+}
