@@ -5,11 +5,6 @@ use App\Models\Roles;
 use App\Core\EmailSender;
 
 class AuthController extends BaseController {
-    public function IndexAction() {
-        $data['message'] = 'Página principal de protectora';
-        $this->renderHTML('../app/views/index_view.php', $data);
-    }
-
     public function registerAction($request) {
         // Si el usuario ya está logueado, redirigir a la página principal
         if (isset($_SESSION['nombre'])) {
@@ -71,7 +66,7 @@ class AuthController extends BaseController {
             $newUser->setNombre($data['nombre']);
             $newUser->setEmail($data['email']);
             $newUser->setPassword($data['password']);
-            $newUser->setRol(3); // Asignar perfil de usuario por defecto
+            $newUser->setRol(3); // Asignar perfil de adoptante por defecto
             $newUser->setBloqueo(0);
             $newUser->setToken($secureToken);
             $newUser->set();
@@ -103,7 +98,7 @@ class AuthController extends BaseController {
         if (isset($_SESSION['nombre'])) {
             header('Location: /');
         }
-
+        // Si se envía el formulario
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data['email'] = $_POST['email'];
             $data['password'] = $_POST['password'];
@@ -119,12 +114,10 @@ class AuthController extends BaseController {
                 $data['emailError'] = 'El email es obligatorio.';
                 $procesarFormulario = false;
                 $emailValido = false;
-                $falloIntento = true;
             } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
                 $data['emailError'] = 'El email no es válido.';
                 $procesarFormulario = false;
                 $emailValido = false;
-                $falloIntento = true;
             }
             // Validar contraseña
             if (empty($data['password']) && $emailValido) {
@@ -151,7 +144,6 @@ class AuthController extends BaseController {
             if ($newUser->isBloqueado($data['email'])) {
                 $data['error'] = 'El usuario está bloqueado, contacta con un administrador';
                 $procesarFormulario = false;
-                $falloIntento = true;
             }
 
             // Procesar el formulario si no hay errores
@@ -167,7 +159,7 @@ class AuthController extends BaseController {
                     $newUser->setIntentosFallidos($data['email'], 0); // Reiniciar intentos fallidos en la base de datos
                     header('Location: /');
                 } else {
-                    $data['error'] = 'Email o contraseña incorrectos.';
+                    echo "<p>Error: " . $newUser->getMessage() . "</p>";
                     $falloIntento = true;
                 }
             }
@@ -177,11 +169,12 @@ class AuthController extends BaseController {
                 $newUser->setIntentosFallidos($data['email'], $intentos);
             }
 
-            // Solo bloquear si hay email y se ha superado el número máximo de intentos fallidos
+            // Bloquear si hay email y se ha superado el número máximo de intentos fallidos
             if ($intentos >= 3 && $emailValido) {
                 $newUser->setBloqueo(1);
                 $newUser->setEmail($data['email']);
                 $newUser->ActualizarBloqueoUsuario($data['email']);
+                $intentos = 0; // Reiniciar intentos fallidos
                 $newUser->setIntentosFallidos($data['email'], 0);
                 $data['error'] = 'Has superado el número máximo de intentos. Tu cuenta ha sido bloqueada.';
             }
@@ -191,14 +184,13 @@ class AuthController extends BaseController {
             shuffle($nums);
             $_SESSION['captcha_nums'] = array_slice($nums, 0, 3);
         } else {
-            // GET: Generar captcha si no existe
+            // Generar captcha si no existe
             if (!isset($_SESSION['captcha_nums'])) {
                 $nums = range(1, 10);
                 shuffle($nums);
                 $_SESSION['captcha_nums'] = array_slice($nums, 0, 3);
             }
         }
-        $data['intentos'] = $intentos;
         // Renderizar la vista de login
         $this->renderHTML('../app/views/login_view.php', $data);
     }
@@ -210,6 +202,7 @@ class AuthController extends BaseController {
         header('Location: /');
     }
 
+    // Método para verificar el token de autenticación
     public function verifyAction() {
         // Obtener el token de la URL
         $token = explode('/', $_SERVER['REQUEST_URI']);

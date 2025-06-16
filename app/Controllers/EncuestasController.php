@@ -19,9 +19,9 @@ class EncuestasController extends BaseController {
 
         $mascota_nombre = '';
         if (isset($adopcion_data['mascota_id'])) {
-            $mascotaModel = \App\Models\Mascotas::getInstance();
+            $mascotaModel = Mascotas::getInstance();
             $mascota = $mascotaModel->getMascota($adopcion_data['mascota_id']);
-            $mascota_nombre = $mascota['nombre'] ?? '';
+            $mascota_nombre = $mascota['nombre'];
         }
 
         // Verificar si ya existe una encuesta para esta adopción

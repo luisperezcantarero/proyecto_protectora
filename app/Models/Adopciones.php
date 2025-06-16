@@ -166,7 +166,7 @@ class Adopciones extends DBAbstractModel {
             return false;
         }
     }
-
+    // Método para actualizar el estado de adopciones a "finalizado" si han pasado más de 15 días desde la adopción
     public function actualizarAdopcionesDiaLimite($adoptante_id) {
         $this->query = "UPDATE adopciones SET estado_id = :estado_id WHERE adoptante_id = :adoptante_id AND estado_id = :estado_id_anterior AND fecha_adopcion < :fecha_limite";
         $this->parametros['estado_id'] = 3;

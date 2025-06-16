@@ -7,6 +7,10 @@ use App\Models\Encuestas;
 
 class AdopcionesController extends BaseController {
     public function asignarAdoptanteAction($request) {
+        // Verificar que el usuario es trabajador
+        if ($_SESSION['rol'] !== 'trabajador') {
+            header('Location: /');
+        }
         $procesarFormulario = true;
         $data['error'] = $data['success'] = $data['email'] = $data['mascotaNombre'] = '';
 
@@ -80,28 +84,28 @@ class AdopcionesController extends BaseController {
         $data['adopciones_finalizadas'] = $adopcion->getAdopcionesFinalizadasByAdoptante($_SESSION['id']);
         $data['adopciones_canceladas'] = $adopcion->getAdopcionesCanceladasByAdoptante($_SESSION['id']);
 
-        // Prepara los nombres de adoptante y trabajador para cada adopción
+        // Preparar los nombres de adoptante y trabajador para cada adopción
         $data['adoptantes'] = [];
         $data['trabajadores'] = [];
         $data['estados'] = [];
-
+        // Obtener el nombre del estado de adopción por id
         foreach ($adopcion->getEstadosAdopcion() as $estado) {
             $data['estados'][$estado['id']] = $estado['nombre'];
         }
-
-        foreach (['adopciones', 'adopciones_finalizadas', 'adopciones_canceladas'] as $tipo) {
-            foreach ($data[$tipo] as $adopcionTipo) {
-                // Adoptante
+        // Obtener los nombres de adoptantes, trabajadores y mascotas
+        foreach (['adopciones', 'adopciones_finalizadas', 'adopciones_canceladas'] as $tipo) { // Iterar sobre los tipos de adopciones
+            foreach ($data[$tipo] as $adopcionTipo) { // Iterar sobre cada adopción
+                // Obtener nombre del Adoptante
                 if (!isset($data['adoptantes'][$adopcionTipo['adoptante_id']])) {
                     $adoptante = $usuarioModel->get($adopcionTipo['adoptante_id']);
                     $data['adoptantes'][$adopcionTipo['adoptante_id']] = $adoptante['nombre'];
                 }
-                // Trabajador
+                // Obtener nombre del Trabajador
                 if (!isset($data['trabajadores'][$adopcionTipo['trabajador_id']])) {
                     $trabajador = $usuarioModel->get($adopcionTipo['trabajador_id']);
                     $data['trabajadores'][$adopcionTipo['trabajador_id']] = $trabajador['nombre'];
                 }
-                // Mascota
+                // Obtener nombre de la Mascota
                 if (!isset($data['mascotas'][$adopcionTipo['mascota_id']])) {
                     $mascota = $mascotaModel->getMascota($adopcionTipo['mascota_id']);
                     $data['mascotas'][$adopcionTipo['mascota_id']] = $mascota['nombre'];
@@ -109,7 +113,7 @@ class AdopcionesController extends BaseController {
             }
         }
 
-        // Añade el campo 'tiene_encuesta' a las finalizadas
+        // Añadir el campo 'tiene_encuesta' a las finalizadas
         foreach ($data['adopciones_finalizadas'] as $key => $adopcionFinalizada) {
             $data['adopciones_finalizadas'][$key]['tiene_encuesta'] = $encuesta->getEncuestaExistente($adopcionFinalizada['id']);
         }
@@ -128,9 +132,9 @@ class AdopcionesController extends BaseController {
 
         // Obtener el ID de la adopción desde POST o GET
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $adopcion_id = $_POST['adopcion_id'] ?? '';
+            $adopcion_id = $_POST['adopcion_id']; // Si se envía desde un formulario
         } else {
-            $adopcion_id = $_GET['id'] ?? '';
+            $adopcion_id = $_GET['id']; // Si se accede directamente a la URL
         }
 
         // Comprobar que la adopcion pertenece al usuario
@@ -152,7 +156,8 @@ class AdopcionesController extends BaseController {
                 // Validar que la fecha de adopción no sea mayor a 15 días
                 $fecha_adopcion = strtotime($data['fecha_adopcion']);
                 $fecha_actual = strtotime(date('Y-m-d H:i:s'));
-                if ($fecha_actual - $fecha_adopcion > 15 * 24 * 60 * 60) { // 15 días en segundos
+                $diasLimiteSegundos = 15 * 24 * 60 * 60; // 15 días en segundos
+                if ($fecha_actual - $fecha_adopcion > $diasLimiteSegundos) {
                     $procesarFormulario = false;
                     $data['error'] = 'No se puede cancelar una adopción que tiene más de 15 días.';
                 }

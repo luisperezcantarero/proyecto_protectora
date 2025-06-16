@@ -14,7 +14,7 @@ class Mascotas extends DBAbstractModel {
     public function __clone() {
         trigger_error('Cloning is not allowed.', E_USER_ERROR);
     }
-    // Attributes
+
     private $id;
     private $nombre;
     private $especie;
@@ -85,7 +85,7 @@ class Mascotas extends DBAbstractModel {
     public function getEdad() {
         return $this->edad;
     }
-    // Methods
+
     public function set() {
         $this->query = "INSERT INTO mascotas (nombre, especie, raza, edad, estado_id, historial_medico, foto, fecha_ingreso, creado_por) 
                         VALUES (:nombre, :especie, :raza, :edad, :estado_id, :historial_medico, :foto, :fecha_ingreso, :creado_por)";

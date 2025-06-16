@@ -35,9 +35,11 @@
                 echo "<p><strong>Resultado:</strong> " . $observacion['resultado'] . "</p>";
                 echo "<p><strong>Observaciones:</strong> " . $observacion['observaciones'] . "</p>";
             } else if (in_array($_SESSION['rol'], ['trabajador', 'administrador'])) {
-                echo '<a class="historial-add-link" href="/seguimientos/add/?adopcion_id=' . $adopcion['id'] . '">Añadir observación</a>';
-            } else {
-                echo "<p>No hay observaciones.</p>";
+                if ($adopcion['estado_id'] == 1) {
+                    echo "<p>No se puede añadir observaciones aún, adopción en curso.</p>";
+                } else {
+                    echo '<a class="historial-add-link" href="/seguimientos/add/?adopcion_id=' . $adopcion['id'] . '">Añadir observación</a>';
+                }
             }
             echo "</div>";
             echo "</div>";

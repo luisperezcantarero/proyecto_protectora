@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\Mascotas;
+use App\Models\Usuario;
 
 class MascotasController extends BaseController {
     public function indexAction($request) {
@@ -10,8 +11,12 @@ class MascotasController extends BaseController {
         $this->renderHTML('../app/views/index_view.php', $data);
     }
 
-    // Action to add a new pet
+    // Método para añadir una nueva mascota
     public function addMascotaAction($request) {
+        // Verificar que el usuario es administrador
+        if ($_SESSION['rol'] !== 'admin') {
+            header('Location: /');
+        }
         $procesaFormulario = false;
         $data = [];
         $data['nombre'] = $data['especie'] = $data['raza'] = $data['edad'] = $data['historial_medico'] = '';
@@ -97,6 +102,10 @@ class MascotasController extends BaseController {
     }
 
     public function editMascotaAction($request) {
+        if ($_SESSION['rol'] !== 'admin') {
+            header('Location: /');
+        }
+        // Obtenemos el ID de la mascota a editar si está en la URL
         if (isset($_GET['id'])) {
             $modeloMascota = Mascotas::getInstance();
             $id = $_GET['id'];
@@ -141,6 +150,9 @@ class MascotasController extends BaseController {
     }
 
     public function deleteMascotaAction($request) {
+        if ($_SESSION['rol'] !== 'admin') {
+            header('Location: /');
+        }
         if (isset($_GET['id'])) {
             $modeloMascota = Mascotas::getInstance();
             // Pasamos el ID de la mascota a eliminar

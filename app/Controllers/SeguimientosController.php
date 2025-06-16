@@ -30,19 +30,19 @@ class SeguimientosController extends BaseController {
         foreach ($adopciones as $adopcion) {
             // Obtener las observaciones de seguimiento
             $data['observaciones'][$adopcion['id']] = $seguimientosModel->getObservacionesPorAdopcion($adopcion['id']);
-            // Obtener mascota
+            // Obtener nombre mascota
             $mascota = $mascotasModel->getMascota($adopcion['mascota_id']);
             $data['mascotas'][$adopcion['mascota_id']] = $mascota['nombre'];
-            // Obtener trabajador
+            // Obtener nombre trabajador
             $trabajador = $usuariosModel->get($adopcion['trabajador_id']);
             $data['trabajadores'][$adopcion['trabajador_id']] = $trabajador['nombre'];
-            // Obtener adoptante
+            // Obtener nombre adoptante
             $adoptante = $usuariosModel->get($adopcion['adoptante_id']);
             $data['adoptantes'][$adopcion['adoptante_id']] = $adoptante['nombre'];
             // Obtener adoptante que ha cancelado la adopción
             if (!empty($adopcion['cancelada_por_id'])) {
                 $cancelador = $usuariosModel->get($adopcion['cancelada_por_id']);
-                $data['canceladores'][$adopcion['cancelada_por_id']] = $cancelador ? $cancelador['nombre'] : '';
+                $data['canceladores'][$adopcion['cancelada_por_id']] = $cancelador['nombre'];
             } else {
                 $data['canceladores'][$adopcion['cancelada_por_id']] = '';
             }

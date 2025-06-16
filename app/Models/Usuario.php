@@ -72,16 +72,17 @@ class Usuario extends DBAbstractModel {
     // Métodos
     // Método set
     public function set() {
-        // Verificar si el email ya existe
         $this->query = "SELECT * FROM usuarios WHERE email = :email";
         $this->parametros['email'] = $this->email;
         $this->get_results_from_query();
+        // Comprobar si el email ya existe
         if (count($this->rows) > 0) {
             $this->message = 'El email ya ha sido registrado.';
             return false;
         }
         // Si no existe, insertar el nuevo usuario
-        $this->query = "INSERT INTO usuarios (nombre, email, password, rol_id, bloqueado, created_at, updated_at, token, token_created_at, intentos_fallidos) VALUES (:nombre, :email, :password, :rol_id, :bloqueado, :created_at, :updated_at, :token, :token_created_at, :intentos_fallidos)";
+        $this->query = "INSERT INTO usuarios (nombre, email, password, rol_id, bloqueado, created_at, updated_at, token, token_created_at, intentos_fallidos)
+                        VALUES (:nombre, :email, :password, :rol_id, :bloqueado, :created_at, :updated_at, :token, :token_created_at, :intentos_fallidos)";
         $this->parametros['nombre'] = $this->nombre;
         $this->parametros['email'] = $this->email;
         $this->parametros['password'] = $this->password;
@@ -98,14 +99,15 @@ class Usuario extends DBAbstractModel {
 
     // Método login
     public function login($email, $password) {
-        $this->query = "SELECT * FROM usuarios WHERE email = :email LIMIT 1";
+        $this->query = "SELECT * FROM usuarios WHERE email = :email LIMIT 1"; // Limitamos a un solo resultado
         $this->parametros['email'] = $email;
         $this->get_results_from_query();
+        // Comprobamos si se ha encontrado un usuario con el email proporcionado
         if (count($this->rows) == 1) {
             $usuario = $this->rows[0];
             // Comprobamos que la contraseña coincide con la almacenada en la base de datos
             if ($password === $usuario['password']) {
-                // Comprobamos si el usuario ha verificado su cuenta
+                // Comprobamos si el usuario ha verificado su cuenta con token
                 if ($usuario['token'] === null) {
                     // Si la cuenta está verificada, asignamos los valores a los atributos de la clase
                     $this->id = $usuario['id'];
@@ -122,13 +124,15 @@ class Usuario extends DBAbstractModel {
                 } else {
                     $this->message = 'Debes verificar tu cuenta antes de iniciar sesión. Revisa tu correo electrónico.';
                 }
+            } else {
+                $this->message = 'Contraseña incorrecta.';
             }
         }
         return false;
     }
 
 
-    // Método para obtener el perfil de usuario
+    // Método para obtener el rol de usuario por email
     public function getUserProfile($email) {
         $this->query = "SELECT rol_id FROM usuarios WHERE email = :email";
         $this->parametros['email'] = $email;
@@ -140,6 +144,7 @@ class Usuario extends DBAbstractModel {
         }
     }
 
+    // Método para obtener el número de intentos fallidos de un usuario por email
     public function getIntentosFallidos($email) {
         $this->query = "SELECT intentos_fallidos FROM usuarios WHERE email = :email";
         $this->parametros['email'] = $email;
@@ -151,6 +156,7 @@ class Usuario extends DBAbstractModel {
         }
     }
 
+    // Método para establecer el número de intentos fallidos de un usuario
     public function setIntentosFallidos($email, $intentos) {
         $this->query = "UPDATE usuarios SET intentos_fallidos = :intentos_fallidos WHERE email = :email";
         $this->parametros['intentos_fallidos'] = $intentos;
@@ -215,10 +221,10 @@ class Usuario extends DBAbstractModel {
         $this->get_results_from_query();
         if (count($this->rows) > 0) {
             // Comprobar si el token ha expirado
-            $this->token_created_at = $this->rows[0]['token_created_at'];
-            $actual_date = date('Y-m-d H:i:s');
+            $this->token_created_at = $this->rows[0]['token_created_at']; // Fecha de creación del token
+            $actual_date = date('Y-m-d H:i:s'); // Fecha actual
             $diff = strtotime($actual_date) - strtotime($this->token_created_at);
-            if ($diff < 36000) {
+            if ($diff < 36000) { // Si la diferencia es menor a 10 horas
                 $this->query = "UPDATE usuarios SET token = NULL, token_created_at = NULL WHERE token = :token";
                 $this->parametros['token'] = $token;
                 $this->get_results_from_query();
@@ -231,10 +237,11 @@ class Usuario extends DBAbstractModel {
         }
     }
 
+    // Método para obtener el rol del adoptante por email
     public function getAdoptanteIdByEmail($email) {
         $this->query = "SELECT id FROM usuarios WHERE email = :email AND rol_id = :rol_id";
         $this->parametros['email'] = $email;
-        $this->parametros['rol_id'] = 3;
+        $this->parametros['rol_id'] = 3; // 3 es el rol de adoptante
         $this->get_results_from_query();
         if (count($this->rows) === 1) {
             return $this->rows[0]['id'];
@@ -242,6 +249,7 @@ class Usuario extends DBAbstractModel {
         return null;
     }
 
+    // Método para obtener un usuario por ID
     public function get($id = '') {
         $this->query = "SELECT * FROM usuarios WHERE id = :id";
         $this->parametros['id'] = $id;
@@ -252,6 +260,7 @@ class Usuario extends DBAbstractModel {
             return null;
         }
     }
+    
     public function edit() {}
     public function delete() {}
 }
