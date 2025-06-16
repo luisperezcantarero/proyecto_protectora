@@ -2,6 +2,7 @@
 namespace App\Controllers;
 use App\Models\Encuestas;
 use App\Models\Adopciones;
+use App\Models\Mascotas;
 
 class EncuestasController extends BaseController {
     public function encuestaAction($request) {
